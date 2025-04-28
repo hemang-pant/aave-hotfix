@@ -20,7 +20,6 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 import { useShallow } from 'zustand/shallow';
 
 import { BorrowInfo } from './BorrowInfo';
-import { InterestRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
 import { ReserveEModePanel } from './ReserveEModePanel';
 import { PanelItem, PanelRow, PanelTitle } from './ReservePanels';
 import { SupplyInfo } from './SupplyInfo';
@@ -191,7 +190,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   <Trans>Interest rate strategy</Trans>
                 </Button>
               </Box>
-              <InterestRateModelGraphContainer reserve={reserve} />
+              {/* <InterestRateModelGraphContainer reserve={reserve} /> */}
             </Box>
           </PanelRow>
         </>

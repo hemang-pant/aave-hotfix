@@ -63,7 +63,6 @@
     "@visx/shape": "^2.12.2",
     "@visx/tooltip": "^2.16.0",
     "@wagmi/core": "^2.16.0",
-    "axios": "^1.7.9",
     "blo": "^1.1.1",
     "connectkit": "1.9.0",
     "d3-array": "^3.2.0",
@@ -113,7 +112,7 @@
     "@types/d3-time-format": "^4.0.0",
     "@types/lodash": "^4.14.189",
     "@types/mixpanel-browser": "^2.38.1",
-    "@types/react": "latest",
+    "@types/react": "^18.0.0",
     "@types/react-infinite-scroller": "^1.2.3",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "axios": "^1.6.2",
@@ -143,8 +142,8 @@
     "typescript": "^5.0.4"
   },
   "resolutions": {
-  "next/@swc/helpers": "0.4.36"
-},
+    "next/@swc/helpers": "0.4.36"
+  },
   "contributors": [
     "Anastasia Khovaeva <anastasia@aave.com>",
     "Andrew Schmidt <andrew@aave.com>",

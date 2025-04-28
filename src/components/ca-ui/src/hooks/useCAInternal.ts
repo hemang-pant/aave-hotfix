@@ -90,7 +90,7 @@ const useCAInternal = (ca: CA) => {
         }));
         allowanceP.current.allow = allow;
         allowanceP.current.deny = deny;
-        allowanceP.current.allow(sources.map((s) => "max"));
+        allowanceP.current.allow(sources.map(() => "max"));
         setCurrentStep("allowance");
       });
 
@@ -166,4 +166,5 @@ const useProvideCA = (ca: CA) => {
   return { ca, ready };
 };
 
-export { useProvideCA, useCAInternal, CurrentStep };
+export { useProvideCA, useCAInternal };  export type { CurrentStep };
+

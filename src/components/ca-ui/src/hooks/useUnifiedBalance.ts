@@ -21,7 +21,7 @@ const useUnifiedBalance = () => {
     refetchInterval: BALANCE_REFETCH_INTERVAL,
     enabled: ready && ca !== null,
   });
-  let balance = 0n;
+  let balance = BigInt(0);  
   const ethBalance = data?.find((b) => b.symbol.toLowerCase() === "eth");
   if (ethBalance) {
     balance = convertToDecimals(ethBalance.balance, 18);

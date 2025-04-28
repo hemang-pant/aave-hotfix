@@ -7,7 +7,7 @@ import { ReserveRateTimeRange, useReserveRatesHistory } from 'src/hooks/useReser
 import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
 
 import { ESupportedTimeRanges } from '../TimeRangeSelector';
-import { ApyGraph, PlaceholderChart } from './ApyGraph';
+import { PlaceholderChart } from './ApyGraph';
 import { GraphLegend } from './GraphLegend';
 import { GraphTimeRangeSelector } from './GraphTimeRangeSelector';
 
@@ -132,14 +132,7 @@ export const ApyGraphContainer = ({
         <ParentSize>
           {({ width }) =>
             data.length > 0 ? (
-              <ApyGraph
-                width={width}
-                height={CHART_HEIGHT}
-                data={data}
-                fields={fields}
-                selectedTimeRange={selectedTimeRange}
-                avgFieldName={graphKey === 'supply' ? 'liquidityRate' : 'variableBorrowRate'}
-              />
+              <div></div>
             ) : (
               /* Placeholder chart in the case where there is no rate data available yet */
               <PlaceholderChart height={CHART_HEIGHT} width={width} />

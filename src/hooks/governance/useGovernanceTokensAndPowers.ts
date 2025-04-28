@@ -11,7 +11,7 @@ interface GovernanceTokensAndPowers extends Powers, GovernanceTokensBalance {
   isAaveTokenWithDelegatedPower: boolean;
   isStkAaveTokenWithDelegatedPower: boolean;
   isAAaveTokenWithDelegatedPower: boolean;
-  refetchPowers: <TPageData>(
+  refetchPowers: <TPageData extends readonly unknown[]>(
     options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
   ) => Promise<QueryObserverResult<Powers, unknown>>;
 }

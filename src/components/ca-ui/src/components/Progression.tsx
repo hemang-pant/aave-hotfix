@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Loader from "./shared/Loader";
 import { VIDEO_LINKS, IMAGE_LINKS } from "../utils/assetList";
