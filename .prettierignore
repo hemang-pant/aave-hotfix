@@ -1,0 +1,27 @@
+# General Ignores
+.gitignore
+.eslintcache
+.eslintignore
+.gitattributes
+node_modules/
+public/
+.nvmrc
+
+# Artifacts
+.next/
+out/
+src/locales/
+
+# IDE
+.vscode
+
+# Env
+.env.*
+
+# Specific Ignores
+*.svg
+*.ico
+*.json
+*.md
+*.log
+*.lock
