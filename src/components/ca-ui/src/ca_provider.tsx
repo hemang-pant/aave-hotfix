@@ -35,6 +35,7 @@ export const CAProvider = ({
     error,
     setError,
   } = useCAInternal(ca);
+  console.log("running ")
 
   return (
     <>

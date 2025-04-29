@@ -7,7 +7,8 @@ import {
 } from "@arcana/ca-sdk";
 import { useState, useEffect, useRef } from "react";
 import { clearAsyncInterval, setAsyncInterval } from "../utils/commonFunction";
-import { useAccountEffect } from "wagmi";
+import { useAccount, useAccountEffect } from "wagmi";
+import { getConnectorClient } from "@wagmi/core";
 
 type CurrentStep =
   | "ub"
@@ -145,8 +146,32 @@ const useCAInternal = (ca: CA) => {
   };
 };
 
-const useProvideCA = (ca: CA) => {
+const useProvideCA =  (ca: CA) => {
   const [ready, setReady] = useState(false);
+  const { address, isConnected, connector  } = useAccount();
+
+  if (isConnected && connector !== null) {
+    console.log('Connected wallet address:', address);
+    try {
+      console.log(' connector = ', connector);
+      const p =  connector!.getProvider().then((p) => {
+        console.log(' provider = ', p);
+        ca.setEVMProvider(p as any);
+        ca.init().then(() => {
+          setReady(true);
+        });
+      }
+      );
+      console.log(' p = ', p);
+    }
+    catch (e) {
+      console.log("ca did not connect. err = ", e);
+    }
+    // Display the address in your UI
+  } else {
+    console.log('Not connected');
+    // Prompt the user to connect their wallet
+  }
   useAccountEffect({
     async onConnect({ connector }) {
       try {
@@ -154,6 +179,7 @@ const useProvideCA = (ca: CA) => {
         ca.setEVMProvider(p as any);
         await ca.init();
         setReady(true);
+
       } catch (e) {
         console.log("ca did not connect. err = ", e);
       }
