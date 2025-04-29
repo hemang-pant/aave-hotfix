@@ -101,9 +101,9 @@ const ViewBreakupButton = styled(Accordion.ItemTrigger)`
   }
 `;
 
-const AccordionContent = styled(Accordion.ItemContent)`
-  padding-top: 0.75rem;
-`;
+// const AccordionContent = styled(Accordion.ItemContent)`
+//   padding-top: 0.75rem;
+// `;
 
 const FeeDetails = styled.div`
   background: ${({ theme }) => theme.cardDetailsBackGround};
@@ -274,6 +274,9 @@ const IntentView: React.FC<{
 }> = ({ allow, deny, intent, intentRefreshing, $display }) => {
   const [rates, setRates] = useState<Record<string, string>>({});
 
+  const [showFees, setShowFees] = useState(false);
+  const [showSources, setShowSources] = useState(false);
+
   useEffect(() => {
     const fetchRates = async () => {
       const fetchedRates = await getCoinbasePrices();
@@ -327,7 +330,7 @@ const IntentView: React.FC<{
                   USD
                 </TotalAtDestination>
               )}
-              <ViewBreakupButton>
+              <ViewBreakupButton onClick={() => setShowSources(!showSources)}>
                 <span>View Sources</span>
                 <ItemIndicator>
                   <img src={IMAGE_LINKS['caret']} alt="Arrow" height={12} width={12} />
@@ -335,7 +338,6 @@ const IntentView: React.FC<{
               </ViewBreakupButton>
             </HeaderRight>
           </Header>
-          <AccordionContent>
             <FeeDetails>
               {intent?.sources?.map((source) => (
                 <Card key={source.chainID}>
@@ -354,7 +356,6 @@ const IntentView: React.FC<{
                 </Card>
               ))}
             </FeeDetails>
-          </AccordionContent>
         </AccordionWrapper>
 
         <AccordionWrapper key="fees" value="fees">
@@ -376,7 +377,7 @@ const IntentView: React.FC<{
                   USD
                 </TotalAtDestination>
               )}
-              <ViewBreakupButton>
+              <ViewBreakupButton onClick={() => {setShowFees(!showFees),console.log("showFees", showFees)}}>
                 <span>View Breakup</span>
                 <ItemIndicator>
                   <img src={IMAGE_LINKS['caret']} alt="Arrow" height={12} width={12} />
@@ -384,7 +385,7 @@ const IntentView: React.FC<{
               </ViewBreakupButton>
             </HeaderRight>
           </Header>
-          <AccordionContent>
+          
             <FeeDetails>
               {[
                 { label: 'CA Gas Fees', value: intent?.fees?.caGas, tooltip: 'Gas Fees' },
@@ -411,7 +412,6 @@ const IntentView: React.FC<{
                 </FeeRow>
               ))}
             </FeeDetails>
-          </AccordionContent>
         </AccordionWrapper>
       </Root>
 
