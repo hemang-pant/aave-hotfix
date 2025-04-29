@@ -53,7 +53,8 @@ import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyActions } from './SupplyActions';
 import { SupplyWrappedTokenActions } from './SupplyWrappedTokenActions';
-
+import { CA } from '@arcana/ca-sdk';
+import { useUnifiedBalance } from 'src/components/ca-ui/src';
 export enum ErrorType {
   CAP_REACHED,
 }
@@ -159,7 +160,7 @@ export const SupplyModalContent = React.memo(
     const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
     const walletBalance = supplyUnWrapped ? nativeBalance : tokenBalance;
-
+    const balances = useUnifiedBalance().balances;
     const supplyApy = poolReserve.supplyAPY;
     const { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt } =
       poolReserve;
@@ -235,7 +236,13 @@ export const SupplyModalContent = React.memo(
           symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
           assets={[
             {
-              balance: maxAmountToSupply,
+              balance: CA.getSupportedChains().find(
+                (chain) => chain.id === currentMarketData.chainId
+              )
+                ? balances?.find(
+                    (b) => b.symbol === (poolReserve.symbol == 'WETH' ? 'ETH' : (poolReserve.symbol == 'USD₮0' ? 'USDT' : poolReserve.symbol))
+                  )?.balance
+                : maxAmountToSupply,
               symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
               iconSymbol: supplyUnWrapped
                 ? currentNetworkConfig.baseAssetSymbol
@@ -245,8 +252,14 @@ export const SupplyModalContent = React.memo(
           capType={CapType.supplyCap}
           isMaxSelected={isMaxSelected}
           disabled={supplyTxState.loading}
-          maxValue={maxAmountToSupply}
-          balanceText={<Trans>Wallet balance</Trans>}
+          maxValue={
+            CA.getSupportedChains().find((chain) => chain.id === currentMarketData.chainId)
+              ? balances?.find(
+                  (b) => b.symbol === (poolReserve.symbol == 'WETH' ? 'ETH' : (poolReserve.symbol == 'USD₮0' ? 'USDT' : poolReserve.symbol))
+                )?.balance
+              : maxAmountToSupply
+          }
+          balanceText={<Trans>Unified token balance</Trans>}
           event={{
             eventName: GENERAL.MAX_INPUT_SELECTION,
             eventParams: {
@@ -426,7 +439,7 @@ export const SupplyWrappedTokenModalContent = ({
         capType={CapType.supplyCap}
         isMaxSelected={isMaxSelected}
         disabled={supplyTxState.loading}
-        balanceText={<Trans>Wallet balance</Trans>}
+        balanceText={<Trans>Unified token balance</Trans>}
         event={{
           eventName: GENERAL.MAX_INPUT_SELECTION,
           eventParams: {

@@ -8,7 +8,6 @@ import {
 import { useState, useEffect, useRef } from "react";
 import { clearAsyncInterval, setAsyncInterval } from "../utils/commonFunction";
 import { useAccount, useAccountEffect } from "wagmi";
-import { getConnectorClient } from "@wagmi/core";
 
 type CurrentStep =
   | "ub"

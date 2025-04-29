@@ -28,12 +28,12 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ENABLE_TESTNET, FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
-
 import { Link } from '../components/primitives/Link';
 import { uiConfig } from '../uiConfig';
 import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
+import { useBalanceModal } from 'src/components/ca-ui/src';
 
 interface Props {
   children: React.ReactElement;
@@ -109,6 +109,7 @@ export function AppHeader() {
   const { readOnlyMode } = useWeb3Context();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { showModal } = useBalanceModal();
 
   useEffect(() => {
     if (mobileDrawerOpen && !md) {
@@ -318,6 +319,29 @@ export function AppHeader() {
               <SvgIcon fontSize="small">
                 <SwitchHorizontalIcon />
               </SvgIcon>
+            </Button>
+          </StyledBadge>
+        </NoSsr>
+
+        <NoSsr>
+          <StyledBadge
+            invisible={true}
+            variant="dot"
+            badgeContent=""
+            color="secondary"
+            sx={{ mr: 2 }}
+          >
+            <Button
+              onClick={() => showModal()}
+              variant="surface"
+              sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
+              aria-label="Switch tool"
+            >
+              {!smd && (
+                <Typography component="span" typography="subheader1">
+                  Show Balance
+                </Typography>
+              )}
             </Button>
           </StyledBadge>
         </NoSsr>

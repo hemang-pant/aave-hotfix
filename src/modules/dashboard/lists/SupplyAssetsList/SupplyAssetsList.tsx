@@ -13,7 +13,7 @@ import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
-
+import { CA } from '@arcana/ca-sdk';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import {
@@ -31,7 +31,7 @@ import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { WalletEmptyInfo } from './WalletEmptyInfo';
-
+import { useUnifiedBalance } from 'src/components/ca-ui/src';
 const head = [
   { title: <Trans key="assets">Assets</Trans>, sortKey: 'symbol' },
   { title: <Trans key="Wallet balance">Wallet balance</Trans>, sortKey: 'walletBalance' },
@@ -167,8 +167,15 @@ export const SupplyAssetsList = () => {
   const sortedSupplyReserves = tokensToSupply.sort((a, b) =>
     +a.walletBalanceUSD > +b.walletBalanceUSD ? -1 : 1
   );
+  const caBalances = useUnifiedBalance().balances;
 
   const filteredSupplyReserves = sortedSupplyReserves.filter((reserve) => {
+    if (CA.getSupportedChains().find((chain) => chain.id === currentChainId)) {
+      reserve.availableToDepositUSD =
+        caBalances
+          ?.find((balance) => balance.symbol === (reserve.symbol == 'USD₮0' ? 'USDT' : reserve.symbol))
+          ?.balanceInFiat?.toString() || '0';
+    }
     if (reserve.availableToDepositUSD !== '0') {
       return true;
     }

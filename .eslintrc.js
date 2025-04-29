@@ -21,6 +21,7 @@ module.exports = {
     'import/no-duplicates': 'off',
     'import/no-named-as-default': 'off',
     'import/no-unresolved': 'warn',
+    '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
     // disabled as with the static export Image does not make to much sense
     '@next/next/no-img-element': 'off',
     'react/self-closing-comp': 'off',
