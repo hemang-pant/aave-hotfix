@@ -148,8 +148,9 @@ const useCAInternal = (ca: CA) => {
 const useProvideCA =  (ca: CA) => {
   const [ready, setReady] = useState(false);
   const { address, isConnected, connector  } = useAccount();
+ const [isMounted, setIsMounted] = useState(false);
 
-  if (isConnected && connector !== null) {
+  if (isConnected && connector !== null && isMounted === false) {
     console.log('Connected wallet address:', address);
     try {
       console.log(' connector = ', connector);
@@ -157,6 +158,7 @@ const useProvideCA =  (ca: CA) => {
         console.log(' provider = ', p);
         ca.setEVMProvider(p as any);
         ca.init().then(() => {
+          setIsMounted(true);
           setReady(true);
         });
       }
