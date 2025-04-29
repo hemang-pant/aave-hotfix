@@ -306,195 +306,129 @@ const IntentView: React.FC<{
         </ChainDetails>
       </Content>
       <Root defaultValue={["sources"]} collapsible>
-        <AccordionWrapper key={"sources"} value="sources">
-          <Header>
-            <HeaderLeft>
-              <TooltipMessage>Spend</TooltipMessage>
-              <AppTooltip message="Total Spend">
-                <InfoImg
-                  src={IMAGE_LINKS["info"]}
-                  alt="Info"
-                  height={18}
-                  width={18}
-                />
-              </AppTooltip>
-            </HeaderLeft>
-            <HeaderRight>
-              <TotalFees>
-                {getReadableNumber(
-                  new Decimal(intent.sourcesTotal)
-                    .sub(intent.fees.total)
-                    .toString()
-                )}{" "}
-                {intent?.token?.symbol}
-              </TotalFees>
-              {rates?.[intent?.token?.symbol] && (
-                <TotalAtDestination>
-                  ~
-                  {(
-                    Number(intent?.sourcesTotal) /
-                    Number(rates[intent?.token?.symbol])
-                  ).toFixed(2)}{" "}
-                  USD
-                </TotalAtDestination>
-              )}
-              <ViewBreakupButton>
-                <span>View Sources</span>
-                <ItemIndicator>
-                  <img
-                    src={IMAGE_LINKS["caret"]}
-                    alt="Arrow"
-                    height={12}
-                    width={12}
-                  />
-                </ItemIndicator>
-              </ViewBreakupButton>
-            </HeaderRight>
-          </Header>
-          <AccordionContent>
-            <FeeDetails>
-              {intent.sources.map((source) => (
-                <Card key={source.chainID}>
-                  <FlexContainer>
-                    <RelativeContainer>
-                      <Logo src={intent.token.logo} alt="Token Logo" />
-                      <ChainLogo src={source.chainLogo} alt="Chain Logo" />
-                    </RelativeContainer>
-                    <TokenDetails>
-                      <TokenName>{source.chainName}</TokenName>
-                    </TokenDetails>
-                  </FlexContainer>
-                  <AllowanceAmount>
-                    {getReadableNumber(source.amount)} {intent.token.symbol}
-                  </AllowanceAmount>
-                </Card>
-              ))}
-            </FeeDetails>
-          </AccordionContent>
-        </AccordionWrapper>
-        <AccordionWrapper key={"fees"} value="fees">
-          <Header>
-            <HeaderLeft>
-              <TooltipMessage>Total Fees</TooltipMessage>
-              <AppTooltip message="Total Fees">
-                <InfoImg
-                  src={IMAGE_LINKS["info"]}
-                  alt="Info"
-                  height={18}
-                  width={18}
-                />
-              </AppTooltip>
-            </HeaderLeft>
-            <HeaderRight>
-              <TotalFees>
-                {getReadableNumber(intent.fees.total)} {intent?.token?.symbol}
-              </TotalFees>
-              {rates?.[intent?.token?.symbol] && (
-                <TotalAtDestination>
-                  ~
-                  {(
-                    Number(intent.fees.total) /
-                    Number(rates[intent.token.symbol])
-                  ).toFixed(2)}{" "}
-                  USD
-                </TotalAtDestination>
-              )}
-              <ViewBreakupButton>
-                <span>View Breakup</span>
-                <ItemIndicator>
-                  <img
-                    src={IMAGE_LINKS["caret"]}
-                    alt="Arrow"
-                    height={12}
-                    width={12}
-                  />
-                </ItemIndicator>
-              </ViewBreakupButton>
-            </HeaderRight>
-          </Header>
-          <AccordionContent>
-            <FeeDetails>
-              <FeeRow>
-                <HeaderLeft>
-                  <Label>CA Gas Fees: </Label>
-                  <AppTooltip message="Gas Fees">
-                    <InfoImg
-                      src={IMAGE_LINKS["info"]}
-                      alt="Info"
-                      height={14}
-                      width={14}
-                    />
-                  </AppTooltip>
-                </HeaderLeft>
-                <HeaderRight>
-                  <Value>
-                    {getReadableNumber(intent.fees.caGas)}{" "}
-                    {intent?.token?.symbol}
-                  </Value>
-                </HeaderRight>
-              </FeeRow>
-              <FeeRow>
-                <HeaderLeft>
-                  <Label>Solver Fees:</Label>
-                  <AppTooltip message="Solver Fees">
-                    <InfoImg
-                      src={IMAGE_LINKS["info"]}
-                      alt="Info"
-                      height={14}
-                      width={14}
-                    />
-                  </AppTooltip>
-                </HeaderLeft>
-                <HeaderRight>
-                  <Value>
-                    {getReadableNumber(intent.fees.solver)}{" "}
-                    {intent?.token?.symbol}
-                  </Value>
-                </HeaderRight>
-              </FeeRow>
-              <FeeRow>
-                <HeaderLeft>
-                  <Label>Protocol Fees:</Label>
-                  <AppTooltip message="Protocol Fees">
-                    <InfoImg
-                      src={IMAGE_LINKS["info"]}
-                      alt="Info"
-                      height={14}
-                      width={14}
-                    />
-                  </AppTooltip>
-                </HeaderLeft>
-                <HeaderRight>
-                  <Value>
-                    {getReadableNumber(intent.fees.protocol)}{" "}
-                    {intent?.token?.symbol}
-                  </Value>
-                </HeaderRight>
-              </FeeRow>
-              <FeeRow>
-                <HeaderLeft>
-                  <Label>Gas Supplied:</Label>
-                  <AppTooltip message="Extra gas supplied">
-                    <InfoImg
-                      src={IMAGE_LINKS["info"]}
-                      alt="Info"
-                      height={14}
-                      width={14}
-                    />
-                  </AppTooltip>
-                </HeaderLeft>
-                <HeaderRight>
-                  <Value>
-                    {" "}
-                    {getReadableNumber(intent.fees.gasSupplied) +
-                      " " +
-                      intent?.token?.symbol}
-                  </Value>
-                </HeaderRight>
-              </FeeRow>
-            </FeeDetails>
-          </AccordionContent>
-        </AccordionWrapper>
+      <AccordionWrapper key="sources" value="sources">
+  <Header>
+    <HeaderLeft>
+      <TooltipMessage>Spend</TooltipMessage>
+      <AppTooltip message="Total Spend">
+        <InfoImg src={IMAGE_LINKS["info"]} alt="Info" height={18} width={18} />
+      </AppTooltip>
+    </HeaderLeft>
+    <HeaderRight>
+      <TotalFees>
+        {getReadableNumber(
+          new Decimal(intent?.sourcesTotal || 0)
+            .minus(intent?.fees?.total || 0)
+            .toString()
+        )}{" "}
+        {intent?.token?.symbol}
+      </TotalFees>
+      {intent?.token?.symbol && rates?.[intent.token.symbol] && (
+        <TotalAtDestination>
+          ~
+          {(
+            Number(intent.sourcesTotal || 0) /
+            Number(rates[intent.token.symbol])
+          ).toFixed(2)}{" "}
+          USD
+        </TotalAtDestination>
+      )}
+      <ViewBreakupButton>
+        <span>View Sources</span>
+        <ItemIndicator>
+          <img
+            src={IMAGE_LINKS["caret"]}
+            alt="Arrow"
+            height={12}
+            width={12}
+          />
+        </ItemIndicator>
+      </ViewBreakupButton>
+    </HeaderRight>
+  </Header>
+  <AccordionContent>
+    <FeeDetails>
+      {intent?.sources?.map((source) => (
+        <Card key={source.chainID}>
+          <FlexContainer>
+            <RelativeContainer>
+              <Logo src={intent?.token?.logo} alt="Token Logo" />
+              <ChainLogo src={source.chainLogo} alt="Chain Logo" />
+            </RelativeContainer>
+            <TokenDetails>
+              <TokenName>{source.chainName}</TokenName>
+            </TokenDetails>
+          </FlexContainer>
+          <AllowanceAmount>
+            {getReadableNumber(source.amount)} {intent?.token?.symbol}
+          </AllowanceAmount>
+        </Card>
+      ))}
+    </FeeDetails>
+  </AccordionContent>
+</AccordionWrapper>
+
+<AccordionWrapper key="fees" value="fees">
+  <Header>
+    <HeaderLeft>
+      <TooltipMessage>Total Fees</TooltipMessage>
+      <AppTooltip message="Total Fees">
+        <InfoImg src={IMAGE_LINKS["info"]} alt="Info" height={18} width={18} />
+      </AppTooltip>
+    </HeaderLeft>
+    <HeaderRight>
+      <TotalFees>
+        {getReadableNumber(intent?.fees?.total)} {intent?.token?.symbol}
+      </TotalFees>
+      {intent?.token?.symbol && rates?.[intent.token.symbol] && (
+        <TotalAtDestination>
+          ~
+          {(
+            Number(intent.fees.total || 0) /
+            Number(rates[intent.token.symbol])
+          ).toFixed(2)}{" "}
+          USD
+        </TotalAtDestination>
+      )}
+      <ViewBreakupButton>
+        <span>View Breakup</span>
+        <ItemIndicator>
+          <img
+            src={IMAGE_LINKS["caret"]}
+            alt="Arrow"
+            height={12}
+            width={12}
+          />
+        </ItemIndicator>
+      </ViewBreakupButton>
+    </HeaderRight>
+  </Header>
+  <AccordionContent>
+    <FeeDetails>
+      {[
+        { label: "CA Gas Fees", value: intent?.fees?.caGas, tooltip: "Gas Fees" },
+        { label: "Solver Fees", value: intent?.fees?.solver, tooltip: "Solver Fees" },
+        { label: "Protocol Fees", value: intent?.fees?.protocol, tooltip: "Protocol Fees" },
+        { label: "Gas Supplied", value: intent?.fees?.gasSupplied, tooltip: "Extra gas supplied" },
+      ].map(({ label, value, tooltip }) => (
+        <FeeRow key={label}>
+          <HeaderLeft>
+            <Label>{label}:</Label>
+            <AppTooltip message={tooltip}>
+              <InfoImg src={IMAGE_LINKS["info"]} alt="Info" height={14} width={14} />
+            </AppTooltip>
+          </HeaderLeft>
+          <HeaderRight>
+            <Value>
+              {getReadableNumber(value)} {intent?.token?.symbol}
+            </Value>
+          </HeaderRight>
+        </FeeRow>
+      ))}
+          </FeeDetails>
+  </AccordionContent>
+</AccordionWrapper>
+
       </Root>
 
       <Header>
