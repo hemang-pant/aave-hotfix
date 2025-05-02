@@ -51,7 +51,7 @@ export const CAProvider = ({
             >
               <>
                 <Modal
-                  alwaysOnTop={currentStep !== "progression"}
+                  alwaysOnTop={true}
                   isopen={currentStep !== "none"}
                 >
                   <AllowanceSetup

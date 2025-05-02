@@ -100,10 +100,10 @@ interface ModalProps {
   children: ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ isopen, alwaysOnTop, children }) => {
+const Modal: React.FC<ModalProps> = ({ isopen, children }) => {
   return (
-    <ModalOverlay $alwaysOnTop={alwaysOnTop} $isopen={isopen}>
-      <ModalContainer $alwaysOnTop={alwaysOnTop} $isopen={isopen}>
+    <ModalOverlay $alwaysOnTop={true} $isopen={isopen}>
+      <ModalContainer $alwaysOnTop={true} $isopen={isopen}>
         {children}
         <Footer>
           Powered by
