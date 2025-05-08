@@ -13,9 +13,9 @@ export const getTextFromStep = (status: string, done: boolean): string => {
     case "INTENT_FULFILLED":
       return done ? "Intent Fulfilled" : "Fulfilling Intent";
     case "MANUAL_STEP_1":
-      return done ? "User Approved Transaction" : "Pending Transaction Approval from User";
+      return done ? "Submitted Transaction" : "Submitting Transaction";
     case "MANUAL_STEP_2":
-      return done ? "Transaction Succcessful" : "Mining Transaction";
+      return done ? "Transaction Mined" : "Mining Transaction";
     default:
       return "Unknown status. Please contact support.";
   }
