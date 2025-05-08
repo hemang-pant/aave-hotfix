@@ -8,6 +8,7 @@ import { IMAGE_LINKS } from '../utils/assetList';
 import { getReadableNumber } from '../utils/commonFunction';
 import type { Intent } from '@arcana/ca-sdk';
 import { getSupplyVal } from 'src/components/transactions/Supply/SupplyActions';
+import { useUnifiedBalance } from '../hooks/useUnifiedBalance';
 
 const MainContainer = styled(MainContainerBase)``;
 const Root = styled(Accordion.Root)`
@@ -273,6 +274,7 @@ const IntentView: React.FC<{
   $display: boolean;
 }> = ({ allow, deny, intent, intentRefreshing, $display }) => {
   const [rates, setRates] = useState<Record<string, string>>({});
+  const balances = useUnifiedBalance().balances;
 
   const [showFees, setShowFees] = useState(false);
   const [showSources, setShowSources] = useState(false);
@@ -317,7 +319,7 @@ const IntentView: React.FC<{
             <HeaderRight>
               <TotalFees>
                 {getReadableNumber(
-                  getSupplyVal().toString()
+                  Number(getSupplyVal() + intent.fees.total).toString()
                 )}{' '}
                 {intent?.token?.symbol}
               </TotalFees>
@@ -355,6 +357,32 @@ const IntentView: React.FC<{
                   </AllowanceAmount>
                 </Card>
               ))}
+              {
+                balances.find(
+                  (balance) => balance.symbol === intent?.token?.symbol
+                )?.breakdown.find(
+                  (breakdown) => breakdown.chain.id === intent?.destination?.chainID
+                )?.balance && (
+                  <Card key={intent?.destination?.chainID}>
+                  <FlexContainer>
+                    <RelativeContainer>
+                      <Logo src={intent?.token?.logo} alt="Token Logo" />
+                      <ChainLogo src={intent?.destination?.chainLogo} alt="Chain Logo" />
+                    </RelativeContainer>
+                    <TokenDetails>
+                      <TokenName>{intent?.destination?.chainName}</TokenName>
+                    </TokenDetails>
+                  </FlexContainer>
+                  <AllowanceAmount>
+                    {getReadableNumber(balances.find(
+                      (balance) => balance.symbol === intent?.token?.symbol
+                    )?.breakdown.find(
+                      (breakdown) => breakdown.chain.id === intent?.destination?.chainID
+                    )?.balance!)} {intent?.token?.symbol}
+                  </AllowanceAmount>
+                </Card>
+                )
+              }
             </FeeDetails>
         </AccordionWrapper>
 
