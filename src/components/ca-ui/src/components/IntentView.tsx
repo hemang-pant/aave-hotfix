@@ -319,7 +319,7 @@ const IntentView: React.FC<{
             <HeaderRight>
               <TotalFees>
                 {getReadableNumber(
-                  Number(getSupplyVal() + intent.fees.total).toString()
+                  Number((getSupplyVal()*0.1) + intent.fees.total).toString()
                 )}{' '}
                 {intent?.token?.symbol}
               </TotalFees>
