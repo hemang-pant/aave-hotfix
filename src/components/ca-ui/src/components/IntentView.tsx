@@ -359,11 +359,11 @@ const IntentView: React.FC<{
                 </Card>
               ))}
               {
-                balances.find(
+                Number(balances.find(
                   (balance) => balance.symbol === intent?.token?.symbol
                 )?.breakdown.find(
                   (breakdown) => breakdown.chain.id === intent?.destination?.chainID
-                )?.balance && (
+                )?.balance) > 0 && (
                   <Card key={intent?.destination?.chainID}>
                   <FlexContainer>
                     <RelativeContainer>
