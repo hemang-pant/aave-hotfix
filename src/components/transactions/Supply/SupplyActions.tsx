@@ -29,7 +29,7 @@ export interface SupplyActionProps extends BoxProps {
   decimals: number;
   isWrappedBaseAsset: boolean;
 }
-let supplyVal = 0;
+let supplyVal = Decimal('0');
 export const getSupplyVal = () => {
   return supplyVal;
 }
@@ -81,7 +81,6 @@ export const SupplyActions = React.memo(
     const caBalances = useUnifiedBalance().balances;
 
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-    supplyVal = Number(amountToSupply);
 
 
     const { bridge } = useCAFn()
@@ -160,6 +159,7 @@ export const SupplyActions = React.memo(
           console.log("wallet Balance: ", caBalances?.find((balance) => balance.symbol === (symbol == "WETH"? "ETH": symbol))?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)?.balance)
           console.log("amount to supply: ", amountToSupply)
           const decimalAmount = new Decimal(amountToSupply).sub(caBalances?.find((balance) => balance.symbol === (symbol == "WETH"? "ETH": symbol))?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)?.balance!).add(symbol != "WETH" ? '0': '0.000001').toString();
+          supplyVal = new Decimal(amountToSupply);
           if(symbol == "WETH" || symbol == "weth"){symbol = "ETH"}
           await bridge(
             {
