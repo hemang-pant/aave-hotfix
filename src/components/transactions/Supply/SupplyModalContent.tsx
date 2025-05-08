@@ -259,7 +259,7 @@ export const SupplyModalContent = React.memo(
                 )?.balance
               : maxAmountToSupply
           }
-          balanceText={<Trans>Unified token balance</Trans>}
+          balanceText={<>Unified token balance</>}
           event={{
             eventName: GENERAL.MAX_INPUT_SELECTION,
             eventParams: {
