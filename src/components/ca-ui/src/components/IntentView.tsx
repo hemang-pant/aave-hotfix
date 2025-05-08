@@ -8,6 +8,7 @@ import { IMAGE_LINKS } from '../utils/assetList';
 import { getReadableNumber } from '../utils/commonFunction';
 import type { Intent } from '@arcana/ca-sdk';
 import Decimal from 'decimal.js';
+import { getSupplyVal } from 'src/components/transactions/Supply/SupplyActions';
 
 const MainContainer = styled(MainContainerBase)``;
 const Root = styled(Accordion.Root)`
@@ -317,7 +318,7 @@ const IntentView: React.FC<{
             <HeaderRight>
               <TotalFees>
                 {getReadableNumber(
-                  new Decimal(intent?.sourcesTotal || 0).minus(intent?.fees?.total || 0).toString()
+                  getSupplyVal().toString()
                 )}{' '}
                 {intent?.token?.symbol}
               </TotalFees>

@@ -18,6 +18,7 @@ import Decimal from 'decimal.js';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
 import { useUnifiedBalance, useCAFn } from 'src/components/ca-ui/src';
+import { get } from 'lodash';
 
 export interface SupplyActionProps extends BoxProps {
   amountToSupply: string;
@@ -28,6 +29,10 @@ export interface SupplyActionProps extends BoxProps {
   blocked: boolean;
   decimals: number;
   isWrappedBaseAsset: boolean;
+}
+let supplyVal = 0;
+export const getSupplyVal = () => {
+  return supplyVal;
 }
 
 export const SupplyActions = React.memo(
@@ -77,6 +82,8 @@ export const SupplyActions = React.memo(
     const caBalances = useUnifiedBalance().balances;
 
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
+    supplyVal = Number(amountToSupply);
+
 
     const { bridge } = useCAFn()
     const {
@@ -236,3 +243,5 @@ export const SupplyActions = React.memo(
     );
   }
 );
+
+
