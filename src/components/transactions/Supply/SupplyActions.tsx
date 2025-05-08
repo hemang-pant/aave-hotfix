@@ -18,7 +18,6 @@ import Decimal from 'decimal.js';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
 import { useUnifiedBalance, useCAFn } from 'src/components/ca-ui/src';
-import { get } from 'lodash';
 
 export interface SupplyActionProps extends BoxProps {
   amountToSupply: string;

@@ -7,7 +7,6 @@ import { MainContainerBase } from './shared/Container';
 import { IMAGE_LINKS } from '../utils/assetList';
 import { getReadableNumber } from '../utils/commonFunction';
 import type { Intent } from '@arcana/ca-sdk';
-import Decimal from 'decimal.js';
 import { getSupplyVal } from 'src/components/transactions/Supply/SupplyActions';
 
 const MainContainer = styled(MainContainerBase)``;
