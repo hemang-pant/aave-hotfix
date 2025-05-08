@@ -153,7 +153,7 @@ export const SupplyActions = React.memo(
         ){
           console.log("wallet Balance: ", caBalances?.find((balance) => balance.symbol === (symbol == "WETH"? "ETH": symbol))?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)?.balance)
           console.log("amount to supply: ", amountToSupply)
-          const decimalAmount = new Decimal(amountToSupply).sub(caBalances?.find((balance) => balance.symbol === (symbol == "WETH"? "ETH": symbol))?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)?.balance!).add(symbol == "WETH" ? '': '0.00001').toString();
+          const decimalAmount = new Decimal(amountToSupply).sub(caBalances?.find((balance) => balance.symbol === (symbol == "WETH"? "ETH": symbol))?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)?.balance!).add(symbol != "WETH" ? '0': '0.000001').toString();
           if(symbol == "WETH" || symbol == "weth"){symbol = "ETH"}
           await bridge(
             {

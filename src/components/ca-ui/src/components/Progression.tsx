@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Loader from "./shared/Loader";
 import { VIDEO_LINKS, IMAGE_LINKS } from "../utils/assetList";
@@ -6,6 +6,7 @@ import { getTextFromStep } from "../utils/getTextFromSteps";
 import { Checkbox, CheckboxControl, CheckboxLabel } from "@ark-ui/react";
 import type { ProgressStep } from "@arcana/ca-sdk";
 import { MainContainerBase } from "./shared/Container";
+import { getManualStepsStatus } from "src/libs/web3-data-provider/Web3Provider";
 
 const MainContainer = styled(MainContainerBase)``;
 
@@ -99,8 +100,16 @@ const Progress: React.FC<{
   $display: boolean;
   close: () => void;
 }> = ({ intentSteps, $display, close }) => {
-  const steps = intentSteps.filter((s) => stepList.includes(s.type));
+  const basicSteps = intentSteps.filter((s) => stepList.includes(s.type)); 
+  const extraSteps: Array<ProgressStep & { done: boolean }> = [
+    { type: "MANUAL_STEP_1", typeID: "manual_step_1", done: getManualStepsStatus()[0].done },
+    { type: "MANUAL_STEP_2", typeID: "manual_step_2", done: getManualStepsStatus()[1].done },
+  ];
+  console.log("extraSteps Status: ", extraSteps[0].done, extraSteps[1].done);
+  const steps = [...basicSteps, ...extraSteps];
   const incompleteStep = steps.findIndex((s) => s.done === false);
+  const [manualDone, setManualDone] = useState(false);
+  console.log("incompleteStep: ", incompleteStep);
   const currentStep = incompleteStep === -1 ? steps.length : incompleteStep + 1;
   const inProgressState = incompleteStep === -1 ? "success" : "inprogress";
   const explorerURL =
@@ -118,9 +127,28 @@ const Progress: React.FC<{
     }
   }, [inProgressState]);
 
+  const checkManualSteps = () => {
+    getManualStepsStatus()[0].done == true ? 
+      console.log("manual step 1 donee") : null;
+    getManualStepsStatus()[1].done == true ?
+      (setManualDone(true),
+      window.setTimeout(() => {
+        close()
+      }, 1000), console.log("manual step 2 donee", manualDone)
+    ): null;
+  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log("checking manual steps");
+      checkManualSteps();
+    }, 1000);
+    return () => clearInterval(interval);
+  }
+  , [])
+
   return (
     <MainContainer $display={$display}>
-      {inProgressState === "success" ? (
+      {inProgressState === "success" && manualDone == false ? (
         <Video
           src={VIDEO_LINKS["success"]}
           autoPlay

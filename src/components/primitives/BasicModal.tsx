@@ -1,6 +1,7 @@
 import { XIcon } from '@heroicons/react/outline';
 import { Box, IconButton, Modal, Paper, SvgIcon } from '@mui/material';
 import React from 'react';
+import { refreshStepState } from 'src/libs/web3-data-provider/Web3Provider';
 
 export interface BasicModalProps {
   open: boolean;
@@ -23,6 +24,7 @@ export const BasicModal = ({
   ...props
 }: BasicModalProps) => {
   const handleClose = () => {
+    refreshStepState();
     if (closeCallback) closeCallback();
     setOpen(false);
   };
