@@ -37,22 +37,23 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@arcana/ca-common@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@arcana/ca-common/-/ca-common-0.0.11.tgz#713307920ff2f8fe0225e1fc71c811ec82b9fd01"
-  integrity sha512-jzx7Lv7xJd6RwpBFVLJA1uB3Hd2eAco/IY32rhGtDg7+DFgF/p4XM/BsWfVh7EAxsGu2Tx3/j8pmDDwKH1OwqQ==
+"@arcana/ca-common@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@arcana/ca-common/-/ca-common-0.0.13.tgz#56777f9c06e00f18ef94d61910b4e6e0dc2dfcbb"
+  integrity sha512-0X23vEBwaf+AuHNaSEI8Kv/1A7gZPWGyXsSFCtFOoIzSPFAJJX4BZUjel6O8Ygu1jaPJa7GCb8trls+5T7bXeg==
   dependencies:
     "@bufbuild/protobuf" "^2.2.5"
     "@improbable-eng/grpc-web" "^0.15.0"
     browser-headers "^0.4.1"
+    es-toolkit "^1.36.0"
     tslib "^2.8.1"
 
-"@arcana/ca-sdk@^0.0.6-beta.1":
-  version "0.0.6-beta.10"
-  resolved "https://registry.yarnpkg.com/@arcana/ca-sdk/-/ca-sdk-0.0.6-beta.10.tgz#9552214a20a8718de09d9ad1b76ed9eeff30bbc1"
-  integrity sha512-RvXuQnWY+GkeRnT+D5ZMIZgoiuxrBhOTb5TvENE1zQCpdmxZQU0yJosoVnGQhBW/0l9LN48RNb37xlX7AeCSEQ==
+"@arcana/ca-sdk@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@arcana/ca-sdk/-/ca-sdk-0.0.6.tgz#e837e05d56696a7f76685cf3613fc05466be0b92"
+  integrity sha512-TlLpljlxk+rDmsUF/v22YOyngoc0YFugrJHyDqg5HZpU/wWFOxezST7+tHnVkBIvNCn3hi8M9IcEi8oQ5UjoEA==
   dependencies:
-    "@arcana/ca-common" "^0.0.11"
+    "@arcana/ca-common" "^0.0.13"
     "@cosmjs/proto-signing" "^0.33.0"
     "@cosmjs/stargate" "^0.33.0"
     "@metamask/rpc-errors" "^7.0.2"
@@ -8185,6 +8186,11 @@ es-toolkit@1.33.0:
   version "1.33.0"
   resolved "https://registry.yarnpkg.com/es-toolkit/-/es-toolkit-1.33.0.tgz#bcc9d92ef2e1ed4618c00dd30dfda9faddf4a0b7"
   integrity sha512-X13Q/ZSc+vsO1q600bvNK4bxgXMkHcf//RxCmYDaRY5DAcT+eoXjY5hoAPGMdRnWQjvyLEcyauG3b6hz76LNqg==
+
+es-toolkit@^1.36.0:
+  version "1.37.2"
+  resolved "https://registry.yarnpkg.com/es-toolkit/-/es-toolkit-1.37.2.tgz#f23a509a71885f13c6ebdd5d3797d7fe518ee977"
+  integrity sha512-ADDfk+pPFF0ofMpRAIc6on01p8heiuwuuJsYLzTP4UOjxVK9QsE2+0D1Q4J/zX2XBo6ac+27H5++YBIwmGAX/g==
 
 esbuild@0.25.1:
   version "0.25.1"
