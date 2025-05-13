@@ -1,17 +1,17 @@
-import React from "react";
-import styled from "styled-components";
-import { IMAGE_LINKS } from "../utils/assetList";
-import { formatNumber, getReadableNumber } from "../utils/commonFunction";
-import { Accordion } from "@ark-ui/react";
-import AppTooltip from "./shared/Tooltip";
-import Decimal from "decimal.js";
-import { darkTheme } from "../utils/theme";
-import { useTheme } from "./ThemeProvider";
-import type { UserAsset } from "@arcana/ca-sdk";
-import { useUnifiedBalance } from "../hooks/useUnifiedBalance";
-import { useAccount } from "wagmi";
-import CopySVG from "./shared/Copy";
-import { MainContainerBase } from "./shared/Container";
+import React from 'react';
+import styled from 'styled-components';
+import { IMAGE_LINKS } from '../utils/assetList';
+import { formatNumber, getReadableNumber } from '../utils/commonFunction';
+import { Accordion } from '@ark-ui/react';
+import AppTooltip from './shared/Tooltip';
+import Decimal from 'decimal.js';
+import { darkTheme } from '../utils/theme';
+import { useTheme } from './ThemeProvider';
+import type { UserAsset } from '@arcana/ca-sdk';
+import { useUnifiedBalance } from '../hooks/useUnifiedBalance';
+import { useAccount } from 'wagmi';
+import CopySVG from './shared/Copy';
+import { MainContainerBase } from './shared/Container';
 
 const MainContainer = styled(MainContainerBase)`
   margin: 0 auto;
@@ -29,7 +29,7 @@ const Header = styled.div`
 
 const Title = styled.h1`
   text-align: center;
-  font-family: "Nohami", sans-serif;
+  font-family: 'Nohami', sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
   color: ${({ theme }) => theme.primaryColor};
@@ -56,7 +56,7 @@ const BalanceCard = styled.div`
 const AddressCard = styled.div`
   font-size: 0.75rem;
   font-weight: 400;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   line-height: 12px;
   display: flex;
   color: ${({ theme }) => theme.primaryColor};
@@ -66,7 +66,7 @@ const AddressCard = styled.div`
 `;
 
 const Balance = styled.div`
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 2rem;
   color: ${({ theme }) => theme.primaryColor};
   font-weight: 600;
@@ -108,7 +108,7 @@ const TokenWrap = styled.div`
 
 const TokenSymbolTitle = styled.span<{ $isdarkmode: boolean }>`
   max-width: 6ch;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   font-weight: 500;
   color: ${({ $isdarkmode, theme }) =>
@@ -117,7 +117,7 @@ const TokenSymbolTitle = styled.span<{ $isdarkmode: boolean }>`
 
 const TokenSymbol = styled.span`
   max-width: 6ch;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   font-weight: 500;
   color: ${({ theme }) => theme.primaryColor};
@@ -125,7 +125,7 @@ const TokenSymbol = styled.span`
 
 const TokenSymbolChainAbs = styled.span`
   max-width: 6ch;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
   font-weight: 400;
   color: ${({ theme }) => theme.primaryColor};
@@ -142,7 +142,7 @@ const BalanceAmount = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   font-weight: 600;
   color: ${({ theme }) => theme.primaryColor};
@@ -152,7 +152,7 @@ const BalanceAmountChainAbs = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
   font-weight: 400;
   color: ${({ theme }) => theme.primaryColor};
@@ -162,7 +162,7 @@ const ViewBreakupButton = styled(Accordion.ItemTrigger)`
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.75rem;
   font-weight: 400;
   color: ${({ theme }) => theme.secondaryColor};
@@ -230,14 +230,14 @@ const RelativeContainer = styled.div`
 `;
 
 const BreakdownTokenSymbol = styled.span`
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
   font-weight: 500;
   color: ${({ theme }) => theme.primaryColor};
 `;
 
 const BreakDownChainSymbol = styled.span<{ $isdarkmode: boolean }>`
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.7rem;
   font-weight: 400;
   color: ${({ theme }) => theme.primaryTitleColor};
@@ -256,12 +256,12 @@ const Root = styled(Accordion.Root)`
 const CurrencySmall = styled.span`
   font-weight: 600;
   font-size: 2rem;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 `;
 const CurrencyLarge = styled.span`
   font-weight: 600;
   font-size: 3rem;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 `;
 
 const TokenIcon = styled.img<{ length: number; index: number }>`
@@ -280,14 +280,9 @@ const TokenIcon = styled.img<{ length: number; index: number }>`
         bottom: -0.25rem;
         right: -0.25rem;
       `}
-  ${(props) =>
-    props.index === 0 && props.length > 1 ? `right: 0; bottom: -0.25rem;` : ""}
-  ${(props) =>
-    props.index === 1 && props.length > 1 ? `bottom: 0; right: -0.25rem;` : ""}
-  ${(props) =>
-    props.index === 2 && props.length > 1
-      ? `bottom: 0.375rem; right: -0.375rem;`
-      : ""}
+  ${(props) => (props.index === 0 && props.length > 1 ? `right: 0; bottom: -0.25rem;` : '')}
+  ${(props) => (props.index === 1 && props.length > 1 ? `bottom: 0; right: -0.25rem;` : '')}
+  ${(props) => (props.index === 2 && props.length > 1 ? `bottom: 0.375rem; right: -0.375rem;` : '')}
   z-index: ${(props) => props.index + 1};
 `;
 
@@ -318,7 +313,7 @@ const BadgeText = styled.span`
   font-size: 0.25rem;
   color: ${({ theme }) => theme.infoColor};
   font-weight: 600;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 `;
 const BreakdownCard = styled.div`
   margin-top: 2rem;
@@ -331,7 +326,7 @@ const BreakdownCard = styled.div`
 const ChainAbstractedContainer = styled.div<{ $isdarkmode: boolean }>`
   color: ${({ theme }) => theme.chainAbsColor};
   font-size: 0.625rem;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -368,15 +363,12 @@ The Arcana Chain Abstraction protocol unifies the
 asset's balances across the different chains.
 `;
 
-const UnifiedBalance: React.FC<UnifiedBalanceComponentProps> = ({
-  close,
-  $display,
-}) => {
+const UnifiedBalance: React.FC<UnifiedBalanceComponentProps> = ({ close, $display }) => {
   const { address } = useAccount();
   const { isDarkMode } = useTheme();
   const { balances } = useUnifiedBalance();
 
-  const getBreakdownImageArray = (breakdown: UserAsset["breakdown"]) => {
+  const getBreakdownImageArray = (breakdown: UserAsset['breakdown']) => {
     const length = breakdown.length;
     const spliceLength = length > 3 ? 2 : length;
     return [...breakdown].slice(0, spliceLength);
@@ -403,20 +395,15 @@ const UnifiedBalance: React.FC<UnifiedBalanceComponentProps> = ({
         <Header>
           <Title>Unified Balance</Title>
           <CloseIcon onClick={close}>
-            <Img
-              src={IMAGE_LINKS["close"]}
-              alt="Description Image"
-              height={20}
-              width={20}
-            />
+            <Img src={IMAGE_LINKS['close']} alt="Description Image" height={20} width={20} />
           </CloseIcon>
         </Header>
 
         <BalanceCard>
           <Balance>
             <CurrencySmall>$</CurrencySmall>
-            <CurrencyLarge>{total.toString().split(".")[0]}.</CurrencyLarge>
-            <CurrencySmall>{total.toString().split(".")[1]}</CurrencySmall>
+            <CurrencyLarge>{total.toString().split('.')[0]}.</CurrencyLarge>
+            <CurrencySmall>{total.toString().split('.')[1]}</CurrencySmall>
           </Balance>
           <AddressCard>
             <AppTooltip message={address} $full={true}>
@@ -436,22 +423,20 @@ const UnifiedBalance: React.FC<UnifiedBalanceComponentProps> = ({
                     <LeftContent>
                       <TokenIconContainer>
                         <AssetIcon src={asset.icon} alt="Logo" />
-                        {getBreakdownImageArray(asset.breakdown).map(
-                          (b, index) => (
-                            <TokenIcon
-                              key={b.chain.id}
-                              src={b.chain.logo}
-                              alt="Logo"
-                              length={asset.breakdown.length}
-                              index={index}
-                            />
-                          )
-                        )}
+                        {getBreakdownImageArray(asset.breakdown).map((b, index) => (
+                          <TokenIcon
+                            key={b.chain.id}
+                            src={b.chain.logo}
+                            alt="Logo"
+                            length={asset.breakdown.length}
+                            index={index}
+                          />
+                        ))}
                         {asset.breakdown.length > 3 && (
                           <Badge length={asset.breakdown.length}>
                             <BadgeText>
                               {asset.breakdown.length > 11
-                                ? "+9"
+                                ? '+9'
                                 : `+${asset.breakdown.length - 2}`}
                             </BadgeText>
                           </Badge>
@@ -465,12 +450,10 @@ const UnifiedBalance: React.FC<UnifiedBalanceComponentProps> = ({
 
                           {asset.abstracted && (
                             <AppTooltip message={message}>
-                              <ChainAbstractedContainer
-                                $isdarkmode={isDarkMode}
-                              >
+                              <ChainAbstractedContainer $isdarkmode={isDarkMode}>
                                 CA
                                 <InfoImg
-                                  src={IMAGE_LINKS["info"]}
+                                  src={IMAGE_LINKS['info']}
                                   alt="Info"
                                   height={10}
                                   width={10}
@@ -483,27 +466,22 @@ const UnifiedBalance: React.FC<UnifiedBalanceComponentProps> = ({
                         <ViewBreakupButton>
                           <span>
                             {asset.breakdown.length} chain
-                            {asset.breakdown.length > 1 ? "s" : ""}
+                            {asset.breakdown.length > 1 ? 's' : ''}
                           </span>
                           <ItemIndicator>
-                            <img
-                              src={IMAGE_LINKS["caret"]}
-                              alt="Arrow"
-                              height={10}
-                              width={10}
-                            />
+                            <img src={IMAGE_LINKS['caret']} alt="Arrow" height={10} width={10} />
                           </ItemIndicator>
                         </ViewBreakupButton>
                       </TokenInfo>
                     </LeftContent>
                     <TokenBalance>
                       <AppTooltip
-                        message={`$${formatNumber(
-                          asset.balanceInFiat
-                        )} (${new Decimal(asset.balance)} ${asset.symbol})`}
+                        message={`$${formatNumber(asset.balanceInFiat)} (${new Decimal(
+                          asset.balance
+                        )} ${asset.symbol})`}
                       >
                         <BalanceAmount>
-                          {getReadableNumber(asset.balance)}{" "}
+                          {getReadableNumber(asset.balance)}{' '}
                           <TokenSymbol>{asset.symbol}</TokenSymbol>
                         </BalanceAmount>
                       </AppTooltip>
@@ -516,29 +494,22 @@ const UnifiedBalance: React.FC<UnifiedBalanceComponentProps> = ({
                           <BreakdownToken>
                             <RelativeContainer>
                               <BreakdownAssetIcon src={asset.icon} alt="Logo" />
-                              <ChainLogo
-                                src={token.chain.logo}
-                                alt="Chain Logo"
-                              />
+                              <ChainLogo src={token.chain.logo} alt="Chain Logo" />
                             </RelativeContainer>
-                            <BreakdownTokenSymbol>
-                              {asset.symbol}
-                            </BreakdownTokenSymbol>
+                            <BreakdownTokenSymbol>{asset.symbol}</BreakdownTokenSymbol>
                             <BreakDownChainSymbol $isdarkmode={isDarkMode}>
                               {token.chain.name}
                             </BreakDownChainSymbol>
                           </BreakdownToken>
 
                           <AppTooltip
-                            message={`$${formatNumber(
-                              token.balanceInFiat
-                            )} (${new Decimal(token.balance)} ${asset.symbol})`}
+                            message={`$${formatNumber(token.balanceInFiat)} (${new Decimal(
+                              token.balance
+                            )} ${asset.symbol})`}
                           >
                             <BalanceAmountChainAbs>
-                              {getReadableNumber(token.balance)}{" "}
-                              <TokenSymbolChainAbs>
-                                {asset.symbol}
-                              </TokenSymbolChainAbs>
+                              {getReadableNumber(token.balance)}{' '}
+                              <TokenSymbolChainAbs>{asset.symbol}</TokenSymbolChainAbs>
                             </BalanceAmountChainAbs>
                           </AppTooltip>
                         </BreakdownItem>

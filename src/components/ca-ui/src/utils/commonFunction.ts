@@ -1,4 +1,4 @@
-import Decimal from "decimal.js";
+import Decimal from 'decimal.js';
 
 const formatNumber = (val: number) => {
   return Intl.NumberFormat().format(val);
@@ -18,13 +18,13 @@ const runAsyncInterval = async (
 };
 
 const setAsyncInterval = (cb: () => Promise<void>, interval: number) => {
-  if (cb && typeof cb === "function") {
+  if (cb && typeof cb === 'function') {
     const intervalIndex = asyncIntervals.length;
     asyncIntervals.push(true);
     setTimeout(() => runAsyncInterval(cb, interval, intervalIndex), interval);
     return intervalIndex;
   } else {
-    throw new Error("Callback must be a function");
+    throw new Error('Callback must be a function');
   }
 };
 
@@ -39,7 +39,7 @@ const THRESHOLD_AMOUNT = new Decimal(1).mul(Decimal.pow(10, -6));
 const getReadableNumber = (input: string) => {
   const n = new Decimal(input);
   if (n.isZero()) {
-    return "0";
+    return '0';
   }
   if (n.lessThan(THRESHOLD_AMOUNT)) {
     return `~${THRESHOLD_AMOUNT.toString()}`;
@@ -47,9 +47,4 @@ const getReadableNumber = (input: string) => {
   return n.toDecimalPlaces(6).toString();
 };
 
-export {
-  getReadableNumber,
-  setAsyncInterval,
-  clearAsyncInterval,
-  formatNumber,
-};
+export { getReadableNumber, setAsyncInterval, clearAsyncInterval, formatNumber };

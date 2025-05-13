@@ -1,13 +1,13 @@
-import React from "react";
-import { Tooltip } from "@ark-ui/react";
-import styled from "styled-components";
+import React from 'react';
+import { Tooltip } from '@ark-ui/react';
+import styled from 'styled-components';
 
 const TooltipTrigger = styled(Tooltip.Trigger)`
   display: inline-flex;
 `;
 
 const TooltipContent = styled(Tooltip.Content)<{ $width: string }>`
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 0.875rem;
   background-color: white;
@@ -28,7 +28,7 @@ const AppTooltip: React.FC<{
   $full?: boolean;
   children: React.ReactNode;
 }> = ({ $full, message, children }) => {
-  const $width = $full ? "100%" : "250px";
+  const $width = $full ? '100%' : '250px';
   return (
     <Tooltip.Root openDelay={1000} interactive={true}>
       <TooltipTrigger asChild>

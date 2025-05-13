@@ -28,11 +28,5 @@ export const ProposalsV3List = () => {
     listItems = listItems.filter((proposal) => proposal.badgeState === filterState);
   }
 
-  return (
-    <Paper>
-      
-    </Paper>
-  );
+  return <Paper></Paper>;
 };
-
-

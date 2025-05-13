@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const LoaderC = styled.div<{ $width: string }>`
   aspect-ratio: 1;

@@ -1,10 +1,10 @@
-import { useContext } from "react";
-import { CAUnifiedBalanceContext, CAContext } from "../context";
-import Decimal from "decimal.js";
-import { useQuery } from "@tanstack/react-query";
-import { ALLOWED_TOKENS } from "../utils/constants";
+import { useContext } from 'react';
+import { CAUnifiedBalanceContext, CAContext } from '../context';
+import Decimal from 'decimal.js';
+import { useQuery } from '@tanstack/react-query';
+import { ALLOWED_TOKENS } from '../utils/constants';
 
-const UNIFIED_BALANCE_KEY = "xar_unified_balance";
+const UNIFIED_BALANCE_KEY = 'xar_unified_balance';
 const BALANCE_REFETCH_INTERVAL = 30_000;
 
 const useUnifiedBalance = () => {
@@ -21,8 +21,8 @@ const useUnifiedBalance = () => {
     refetchInterval: BALANCE_REFETCH_INTERVAL,
     enabled: ready && ca !== null,
   });
-  let balance = BigInt(0);  
-  const ethBalance = data?.find((b) => b.symbol.toLowerCase() === "eth");
+  let balance = BigInt(0);
+  const ethBalance = data?.find((b) => b.symbol.toLowerCase() === 'eth');
   if (ethBalance) {
     balance = convertToDecimals(ethBalance.balance, 18);
   }
@@ -101,14 +101,12 @@ const useBalance = ({ symbol }: UseBalanceParams): UseBalanceReturn => {
   });
 
   if (isSuccess) {
-    const val = data.find(
-      (b) => b.symbol.toLowerCase() === symbol.toLowerCase()
-    );
+    const val = data.find((b) => b.symbol.toLowerCase() === symbol.toLowerCase());
     if (!val) {
       return {
         loading: false,
         data: null,
-        error: new Error("asset not supported"),
+        error: new Error('asset not supported'),
       };
     }
     return {

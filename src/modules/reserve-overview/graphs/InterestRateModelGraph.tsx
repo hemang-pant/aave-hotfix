@@ -184,7 +184,6 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
       },
     ];
 
-
     return (
       <>
         <svg width={width} height={height}>
@@ -329,11 +328,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
         </svg>
 
         {/* Tooltip Info */}
-        {tooltipData && (
-          <div>
-            
-          </div>
-        )}
+        {tooltipData && <div></div>}
       </>
     );
   }

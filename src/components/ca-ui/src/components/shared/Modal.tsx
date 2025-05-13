@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
-import styled, { css, keyframes } from "styled-components";
-import { IMAGE_LINKS } from "../../utils/assetList";
+import React, { ReactNode } from 'react';
+import styled, { css, keyframes } from 'styled-components';
+import { IMAGE_LINKS } from '../../utils/assetList';
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -42,7 +42,7 @@ const slideOut = keyframes`
 `;
 
 const ModalOverlay = styled.div<{ $isopen: boolean; $alwaysOnTop: boolean }>`
-  display: ${({ $isopen }) => ($isopen ? "flex" : "none")};
+  display: ${({ $isopen }) => ($isopen ? 'flex' : 'none')};
   top: 0;
   left: 0;
   width: 100%;
@@ -83,7 +83,7 @@ const Footer = styled.footer`
   justify-content: center;
   cursor: pointer;
   gap: 10px;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   margin-top: 10px;
   font-size: 0.875rem;
   font-weight: 500;
@@ -107,7 +107,7 @@ const Modal: React.FC<ModalProps> = ({ isopen, children }) => {
         {children}
         <Footer>
           Powered by
-          <Img src={IMAGE_LINKS["footer"]} alt="Powered by arcana" />
+          <Img src={IMAGE_LINKS['footer']} alt="Powered by arcana" />
         </Footer>
       </ModalContainer>
     </ModalOverlay>

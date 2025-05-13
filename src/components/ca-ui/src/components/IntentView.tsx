@@ -319,9 +319,7 @@ const IntentView: React.FC<{
             </HeaderLeft>
             <HeaderRight>
               <TotalFees>
-                {getReadableNumber(
-                  new Decimal(getSupplyVal()).add(intent.fees.total).toString()
-                )}{' '}
+                {getReadableNumber(new Decimal(getSupplyVal()).add(intent.fees.total).toString())}{' '}
                 {intent?.token?.symbol}
               </TotalFees>
               {intent?.token?.symbol && rates?.[intent.token.symbol] && (
@@ -341,50 +339,52 @@ const IntentView: React.FC<{
               </ViewBreakupButton>
             </HeaderRight>
           </Header>
-            <FeeDetails>
-              {intent?.sources?.map((source) => (
-                <Card key={source.chainID}>
-                  <FlexContainer>
-                    <RelativeContainer>
-                      <Logo src={intent?.token?.logo} alt="Token Logo" />
-                      <ChainLogo src={source.chainLogo} alt="Chain Logo" />
-                    </RelativeContainer>
-                    <TokenDetails>
-                      <TokenName>{source.chainName}</TokenName>
-                    </TokenDetails>
-                  </FlexContainer>
-                  <AllowanceAmount>
-                    {getReadableNumber(source.amount)} {intent?.token?.symbol}
-                  </AllowanceAmount>
-                </Card>
-              ))}
-              {
-                Number(balances.find(
-                  (balance) => balance.symbol === intent?.token?.symbol
-                )?.breakdown.find(
-                  (breakdown) => breakdown.chain.id === intent?.destination?.chainID
-                )?.balance) > 0 && (
-                  <Card key={intent?.destination?.chainID}>
-                  <FlexContainer>
-                    <RelativeContainer>
-                      <Logo src={intent?.token?.logo} alt="Token Logo" />
-                      <ChainLogo src={intent?.destination?.chainLogo} alt="Chain Logo" />
-                    </RelativeContainer>
-                    <TokenDetails>
-                      <TokenName>{intent?.destination?.chainName}</TokenName>
-                    </TokenDetails>
-                  </FlexContainer>
-                  <AllowanceAmount>
-                    {getReadableNumber(balances.find(
-                      (balance) => balance.symbol === intent?.token?.symbol
-                    )?.breakdown.find(
-                      (breakdown) => breakdown.chain.id === intent?.destination?.chainID
-                    )?.balance!)} {intent?.token?.symbol}
-                  </AllowanceAmount>
-                </Card>
-                )
-              }
-            </FeeDetails>
+          <FeeDetails>
+            {intent?.sources?.map((source) => (
+              <Card key={source.chainID}>
+                <FlexContainer>
+                  <RelativeContainer>
+                    <Logo src={intent?.token?.logo} alt="Token Logo" />
+                    <ChainLogo src={source.chainLogo} alt="Chain Logo" />
+                  </RelativeContainer>
+                  <TokenDetails>
+                    <TokenName>{source.chainName}</TokenName>
+                  </TokenDetails>
+                </FlexContainer>
+                <AllowanceAmount>
+                  {getReadableNumber(source.amount)} {intent?.token?.symbol}
+                </AllowanceAmount>
+              </Card>
+            ))}
+            {Number(
+              balances
+                .find((balance) => balance.symbol === intent?.token?.symbol)
+                ?.breakdown.find((breakdown) => breakdown.chain.id === intent?.destination?.chainID)
+                ?.balance
+            ) > 0 && (
+              <Card key={intent?.destination?.chainID}>
+                <FlexContainer>
+                  <RelativeContainer>
+                    <Logo src={intent?.token?.logo} alt="Token Logo" />
+                    <ChainLogo src={intent?.destination?.chainLogo} alt="Chain Logo" />
+                  </RelativeContainer>
+                  <TokenDetails>
+                    <TokenName>{intent?.destination?.chainName}</TokenName>
+                  </TokenDetails>
+                </FlexContainer>
+                <AllowanceAmount>
+                  {getReadableNumber(
+                    balances
+                      .find((balance) => balance.symbol === intent?.token?.symbol)
+                      ?.breakdown.find(
+                        (breakdown) => breakdown.chain.id === intent?.destination?.chainID
+                      )?.balance!
+                  )}{' '}
+                  {intent?.token?.symbol}
+                </AllowanceAmount>
+              </Card>
+            )}
+          </FeeDetails>
         </AccordionWrapper>
 
         <AccordionWrapper key="fees" value="fees">
@@ -406,7 +406,11 @@ const IntentView: React.FC<{
                   USD
                 </TotalAtDestination>
               )}
-              <ViewBreakupButton onClick={() => {setShowFees(!showFees),console.log("showFees", showFees)}}>
+              <ViewBreakupButton
+                onClick={() => {
+                  setShowFees(!showFees), console.log('showFees', showFees);
+                }}
+              >
                 <span>View Breakup</span>
                 <ItemIndicator>
                   <img src={IMAGE_LINKS['caret']} alt="Arrow" height={12} width={12} />
@@ -414,33 +418,33 @@ const IntentView: React.FC<{
               </ViewBreakupButton>
             </HeaderRight>
           </Header>
-          
-            <FeeDetails>
-              {[
-                { label: 'CA Gas Fees', value: intent?.fees?.caGas, tooltip: 'Gas Fees' },
-                { label: 'Solver Fees', value: intent?.fees?.solver, tooltip: 'Solver Fees' },
-                { label: 'Protocol Fees', value: intent?.fees?.protocol, tooltip: 'Protocol Fees' },
-                {
-                  label: 'Gas Supplied',
-                  value: intent?.fees?.gasSupplied,
-                  tooltip: 'Extra gas supplied',
-                },
-              ].map(({ label, value, tooltip }) => (
-                <FeeRow key={label}>
-                  <HeaderLeft>
-                    <Label>{label}:</Label>
-                    <AppTooltip message={tooltip}>
-                      <InfoImg src={IMAGE_LINKS['info']} alt="Info" height={14} width={14} />
-                    </AppTooltip>
-                  </HeaderLeft>
-                  <HeaderRight>
-                    <Value>
-                      {getReadableNumber(value)} {intent?.token?.symbol}
-                    </Value>
-                  </HeaderRight>
-                </FeeRow>
-              ))}
-            </FeeDetails>
+
+          <FeeDetails>
+            {[
+              { label: 'CA Gas Fees', value: intent?.fees?.caGas, tooltip: 'Gas Fees' },
+              { label: 'Solver Fees', value: intent?.fees?.solver, tooltip: 'Solver Fees' },
+              { label: 'Protocol Fees', value: intent?.fees?.protocol, tooltip: 'Protocol Fees' },
+              {
+                label: 'Gas Supplied',
+                value: intent?.fees?.gasSupplied,
+                tooltip: 'Extra gas supplied',
+              },
+            ].map(({ label, value, tooltip }) => (
+              <FeeRow key={label}>
+                <HeaderLeft>
+                  <Label>{label}:</Label>
+                  <AppTooltip message={tooltip}>
+                    <InfoImg src={IMAGE_LINKS['info']} alt="Info" height={14} width={14} />
+                  </AppTooltip>
+                </HeaderLeft>
+                <HeaderRight>
+                  <Value>
+                    {getReadableNumber(value)} {intent?.token?.symbol}
+                  </Value>
+                </HeaderRight>
+              </FeeRow>
+            ))}
+          </FeeDetails>
         </AccordionWrapper>
       </Root>
 

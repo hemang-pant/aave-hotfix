@@ -24,9 +24,10 @@ module.exports = withBundleAnalyzer({
         },
       ],
     });
-    config.experiments = { 
+    config.experiments = {
       ...config.experiments,
-      topLevelAwait: true };
+      topLevelAwait: true,
+    };
     config.resolve.fallback = { fs: false, net: false, tls: false };
     return config;
   },

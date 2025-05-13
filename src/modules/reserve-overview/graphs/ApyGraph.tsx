@@ -15,7 +15,6 @@ import { FormattedReserveHistoryItem, ReserveRateTimeRange } from 'src/hooks/use
 
 type TooltipData = FormattedReserveHistoryItem;
 
-
 // accessors
 const getDate = (d: FormattedReserveHistoryItem) => new Date(d.date);
 const bisectDate = bisector<FormattedReserveHistoryItem, Date>((d) => new Date(d.date)).left;
@@ -261,11 +260,7 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
         </svg>
 
         {/* Tooltip Info */}
-        {tooltipData && (
-          <div>
-            
-          </div>
-        )}
+        {tooltipData && <div></div>}
       </>
     );
   }

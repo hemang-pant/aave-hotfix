@@ -4,16 +4,13 @@ import {
   useWriteContract as internalUseWriteContract,
   UseWriteContractParameters,
   UseWriteContractReturnType,
-} from "wagmi";
-import { encodeFunctionData } from "viem";
-import { useCA } from "./useCA";
-import { useContext } from "react";
-import { CAErrorContext } from "../context";
+} from 'wagmi';
+import { encodeFunctionData } from 'viem';
+import { useCA } from './useCA';
+import { useContext } from 'react';
+import { CAErrorContext } from '../context';
 
-function useWriteContract<
-  config extends Config = ResolvedRegister["config"],
-  context = unknown
->(
+function useWriteContract<config extends Config = ResolvedRegister['config'], context = unknown>(
   parameters: UseWriteContractParameters<config, context> = {}
 ): UseWriteContractReturnType<config, context> {
   const wcr = internalUseWriteContract(parameters);
@@ -36,19 +33,13 @@ function useWriteContract<
           to: variables.address,
           data: data,
           value:
-            typeof variables.value === "bigint"
-              ? `0x${variables.value.toString(16)}`
-              : undefined,
+            typeof variables.value === 'bigint' ? `0x${variables.value.toString(16)}` : undefined,
         });
         return await originalWriteContractAsync(variables, options);
       } catch (e: any) {
         setError(e.message);
         if (options?.onError) {
-          options.onError(
-            e,
-            variables as Parameters<typeof options.onError>[1],
-            wcr.context
-          );
+          options.onError(e, variables as Parameters<typeof options.onError>[1], wcr.context);
         }
         throw e;
       }
@@ -59,17 +50,13 @@ function useWriteContract<
 
   const writeContract: typeof originalWriteContract = (variables, options?) => {
     if (ca && ready) {
-      const data = encodeFunctionData(
-        variables as Parameters<typeof originalWriteContract>[0]
-      );
+      const data = encodeFunctionData(variables as Parameters<typeof originalWriteContract>[0]);
 
       ca.preprocess({
         to: variables.address,
         data: data,
         value:
-          typeof variables.value === "bigint"
-            ? `0x${variables.value.toString(16)}`
-            : undefined,
+          typeof variables.value === 'bigint' ? `0x${variables.value.toString(16)}` : undefined,
       })
         .then(() => {
           return originalWriteContract(variables, options);
@@ -77,11 +64,7 @@ function useWriteContract<
         .catch((e) => {
           setError(e.message);
           if (options?.onError) {
-            options.onError(
-              e,
-              variables as Parameters<typeof options.onError>[1],
-              wcr.context
-            );
+            options.onError(e, variables as Parameters<typeof options.onError>[1], wcr.context);
           }
         });
       return;

@@ -1,11 +1,11 @@
-import React from "react";
-import styled from "styled-components";
-import Loader from "./shared/Loader";
-import { MainContainerBase } from "./shared/Container";
-import { VIDEO_LINKS, IMAGE_LINKS } from "../utils/assetList";
-import { Checkbox, CheckboxControl, CheckboxLabel } from "@ark-ui/react";
-import { useTheme } from "./ThemeProvider";
-import type { onAllowanceHookSource } from "@arcana/ca-sdk";
+import React from 'react';
+import styled from 'styled-components';
+import Loader from './shared/Loader';
+import { MainContainerBase } from './shared/Container';
+import { VIDEO_LINKS, IMAGE_LINKS } from '../utils/assetList';
+import { Checkbox, CheckboxControl, CheckboxLabel } from '@ark-ui/react';
+import { useTheme } from './ThemeProvider';
+import type { onAllowanceHookSource } from '@arcana/ca-sdk';
 
 const MainContainer = styled(MainContainerBase)``;
 
@@ -36,7 +36,7 @@ const LoaderWrap = styled.div`
 const SectionTitle = styled.div<{ isDarkMode: boolean }>`
   display: flex;
   justify-content: start;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: ${({ isDarkMode, theme }) =>
@@ -70,11 +70,11 @@ const Card = styled.div`
 
 const StyledCheckboxLabel = styled(CheckboxLabel)<{ disabled: boolean }>`
   text-align: start;
-  font-family: "Nohemi", sans-serif;
+  font-family: 'Nohemi', sans-serif;
   font-weight: 500;
   font-size: 1.25rem;
   color: ${({ theme }) => theme.primaryColor};
-  opacity: ${({ disabled }) => (disabled ? "40%" : "100%")};
+  opacity: ${({ disabled }) => (disabled ? '40%' : '100%')};
 `;
 
 const StyledCheckboxControl = styled(CheckboxControl)<{ checked: boolean }>`
@@ -131,14 +131,14 @@ const TokenDetails = styled.div`
 `;
 
 const TokenName = styled.span`
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.25rem;
   font-weight: 500;
   color: ${({ theme }) => theme.primaryColor};
 `;
 
 const ChainName = styled.div`
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   font-weight: 400;
   color: ${({ theme }) => theme.secondaryTitleColor};
@@ -151,15 +151,14 @@ const AllowanceSetup: React.FC<{
   const { isDarkMode } = useTheme();
 
   const incompleteStep = sources.findIndex((s) => s.done === false);
-  const currentStep =
-    incompleteStep === -1 ? sources.length : incompleteStep + 1;
-  const state = incompleteStep === -1 ? "success" : "inprogress";
+  const currentStep = incompleteStep === -1 ? sources.length : incompleteStep + 1;
+  const state = incompleteStep === -1 ? 'success' : 'inprogress';
 
   return (
     <MainContainer $display={$display}>
-      {state === "success" ? (
+      {state === 'success' ? (
         <Video
-          src={VIDEO_LINKS["success"]}
+          src={VIDEO_LINKS['success']}
           autoPlay
           muted
           onContextMenu={(e) => e.preventDefault()}
@@ -198,22 +197,12 @@ const AllowanceSetup: React.FC<{
                         <Loader $width="4px" />
                       </LoaderWrap>
                     ) : (
-                      "-"
+                      '-'
                     )
                   ) : src.done === true ? (
-                    <img
-                      src={IMAGE_LINKS["success"]}
-                      alt="Success"
-                      width={20}
-                      height={20}
-                    />
+                    <img src={IMAGE_LINKS['success']} alt="Success" width={20} height={20} />
                   ) : (
-                    <img
-                      src={IMAGE_LINKS["error"]}
-                      alt="Error"
-                      width={20}
-                      height={20}
-                    />
+                    <img src={IMAGE_LINKS['error']} alt="Error" width={20} height={20} />
                   )}
                 </StyledCheckboxControl>
               </StyledCheckbox>

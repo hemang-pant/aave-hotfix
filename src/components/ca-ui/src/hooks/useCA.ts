@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import { CAContext, CAErrorContext } from "../context";
-import { ALLOWED_TOKENS } from "../utils/constants";
+import { useContext } from 'react';
+import { CAContext, CAErrorContext } from '../context';
+import { ALLOWED_TOKENS } from '../utils/constants';
 
 export const useCA = () => {
   const ca = useContext(CAContext);
@@ -18,20 +18,16 @@ export const useCAFn = () => {
     chain?: number;
   }) => {
     if (!ready || !ca) {
-      throw new Error("ca not ready");
+      throw new Error('ca not ready');
     }
     try {
-      let fn = ca
-        .transfer()
-        .to(params.to)
-        .amount(params.amount)
-        .token(params.token);
+      let fn = ca.transfer().to(params.to).amount(params.amount).token(params.token);
       if (params.chain) {
         fn = fn.chain(params.chain);
       }
       return await fn.exec();
     } catch (e) {
-      if (e instanceof Error && "message" in e) {
+      if (e instanceof Error && 'message' in e) {
         setError(e.message);
       }
       throw e;
@@ -45,7 +41,7 @@ export const useCAFn = () => {
     gas?: bigint;
   }) => {
     if (!ready || !ca) {
-      throw new Error("ca not ready");
+      throw new Error('ca not ready');
     }
 
     try {
@@ -58,7 +54,7 @@ export const useCAFn = () => {
       }
       return await fn.exec();
     } catch (e) {
-      if (e instanceof Error && "message" in e) {
+      if (e instanceof Error && 'message' in e) {
         setError(e.message);
       }
       throw e;

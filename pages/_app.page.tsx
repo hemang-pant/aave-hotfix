@@ -142,43 +142,43 @@ export default function MyApp(props: MyAppProps) {
           <WagmiProvider config={wagmiConfig}>
             <QueryClientProvider client={queryClient}>
               <CAProvider>
-              <ConnectKitProvider
-                onDisconnect={cleanLocalStorage}
-                onConnect={({ connectorId }) => setWalletType(connectorId)}
-              >
-                <Web3ContextProvider>
-                  <AppGlobalStyles>
-                    <AddressBlocked>
-                      <ModalContextProvider>
-                        <SharedDependenciesProvider>
-                          <AppDataProvider>
-                            <GasStationProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <DebtSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                              <TransactionEventHandler />
-                              <SwitchModal />
-                              <StakingMigrateModal />
-                              <BridgeModal />
-                              <ReadOnlyModal />
-                            </GasStationProvider>
-                          </AppDataProvider>
-                        </SharedDependenciesProvider>
-                      </ModalContextProvider>
-                    </AddressBlocked>
-                  </AppGlobalStyles>
-                </Web3ContextProvider>
-              </ConnectKitProvider>
-              <ReactQueryDevtools initialIsOpen={false} />
-            </CAProvider>
+                <ConnectKitProvider
+                  onDisconnect={cleanLocalStorage}
+                  onConnect={({ connectorId }) => setWalletType(connectorId)}
+                >
+                  <Web3ContextProvider>
+                    <AppGlobalStyles>
+                      <AddressBlocked>
+                        <ModalContextProvider>
+                          <SharedDependenciesProvider>
+                            <AppDataProvider>
+                              <GasStationProvider>
+                                {getLayout(<Component {...pageProps} />)}
+                                <SupplyModal />
+                                <WithdrawModal />
+                                <BorrowModal />
+                                <RepayModal />
+                                <CollateralChangeModal />
+                                <DebtSwitchModal />
+                                <ClaimRewardsModal />
+                                <EmodeModal />
+                                <SwapModal />
+                                <FaucetModal />
+                                <TransactionEventHandler />
+                                <SwitchModal />
+                                <StakingMigrateModal />
+                                <BridgeModal />
+                                <ReadOnlyModal />
+                              </GasStationProvider>
+                            </AppDataProvider>
+                          </SharedDependenciesProvider>
+                        </ModalContextProvider>
+                      </AddressBlocked>
+                    </AppGlobalStyles>
+                  </Web3ContextProvider>
+                </ConnectKitProvider>
+                <ReactQueryDevtools initialIsOpen={false} />
+              </CAProvider>
             </QueryClientProvider>
           </WagmiProvider>
         </LanguageProvider>

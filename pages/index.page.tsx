@@ -57,7 +57,8 @@ export default function Home() {
                   <Trans>Borrow</Trans>
                 </Typography>
               </StyledToggleButton>
-            </StyledToggleButtonGroup> 
+            </StyledToggleButtonGroup>
+             
           </Box>
         )}
 

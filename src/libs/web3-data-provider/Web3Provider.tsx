@@ -49,7 +49,7 @@ export const getManualStepsStatus = () => {
     { type: 'MANUAL_STEP_2', done: manual_step_2_done },
   ];
   return steps;
-}
+};
 
 export const getFailStatus = () => {
   const steps = [
@@ -57,14 +57,14 @@ export const getFailStatus = () => {
     { type: 'CHECK_FAIL_2', done: checkFail2 },
   ];
   return steps;
-}
+};
 
 export const refreshStepState = () => {
   manual_step_1_done = false;
   manual_step_2_done = false;
   checkFail1 = false;
   checkFail2 = false;
-}
+};
 
 let didInit = false;
 let didAutoConnectForCypress = false;
@@ -74,7 +74,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const { watchAssetAsync } = useWatchAsset();
   const { chainId, address } = useAccount();
   const { connect, connectors } = useConnect();
-
 
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
@@ -137,12 +136,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
       // 2. Wait for confirmation (1 block confirmation by default)
       const receipt: TransactionReceipt = await txResponse.wait();
-  
+
       if (receipt.status === 1) {
         console.log('Transaction successful');
         // 3. Transaction successful
         manual_step_2_done = true;
-        
+
         // return receipt;
       } else {
         console.warn('Transaction failed');

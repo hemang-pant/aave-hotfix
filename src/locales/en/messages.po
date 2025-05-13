@@ -264,10 +264,6 @@ msgstr "There is not enough collateral to cover a new borrow"
 msgid "Supply {symbol}"
 msgstr "Supply {symbol}"
 
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
-msgid "Total interest accrued"
-msgstr "Total interest accrued"
-
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/migration/MigrationList.tsx
@@ -558,7 +554,6 @@ msgstr "assets"
 msgid "Balance to revoke"
 msgstr "Balance to revoke"
 
-#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Utilization Rate"
@@ -1100,8 +1095,6 @@ msgstr "Get GHO"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
-#: src/components/transactions/Supply/SupplyModalContent.tsx
-#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Wallet balance"
@@ -2057,10 +2050,6 @@ msgstr "Repaying {symbol}"
 msgid "Bridge {symbol}"
 msgstr "Bridge {symbol}"
 
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
-msgid "Effective interest rate"
-msgstr "Effective interest rate"
-
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
 msgid "Forum discussion"
 msgstr "Forum discussion"
@@ -2230,7 +2219,6 @@ msgid "Your current loan to value based on your collateral supplied."
 msgstr "Your current loan to value based on your collateral supplied."
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
 msgid "Staking discount"
 msgstr "Staking discount"
 
@@ -2532,10 +2520,6 @@ msgstr "{numSelected}/{numAvailable} assets selected"
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr "To repay on behalf of a user an explicit amount to repay is needed"
-
-#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
-msgid "Repayment amount to reach {0}% utilization"
-msgstr "Repayment amount to reach {0}% utilization"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
@@ -2854,6 +2838,10 @@ msgstr "Voting is on"
 msgid "Confirming transaction"
 msgstr "Confirming transaction"
 
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+msgid "Unified token balance"
+msgstr "Unified token balance"
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr "I understand how cooldown ({0}) and unstaking ({1}) work"
@@ -2907,10 +2895,6 @@ msgstr "Please connect your wallet to see your supplies, borrowings, and open po
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid expiration"
 msgstr "Invalid expiration"
-
-#: src/modules/reserve-overview/Gho/GhoInterestRateGraph.tsx
-msgid "Interest accrued"
-msgstr "Interest accrued"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Thank you for voting"
@@ -3093,10 +3077,6 @@ msgstr "Switch borrow position"
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
 msgstr "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
-
-#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
-msgid "Borrow amount to reach {0}% utilization"
-msgstr "Borrow amount to reach {0}% utilization"
 
 #: src/components/ConnectWalletPaper.tsx
 #: src/components/ConnectWalletPaperStaking.tsx

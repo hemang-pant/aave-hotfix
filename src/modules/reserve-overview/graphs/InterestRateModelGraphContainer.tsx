@@ -1,7 +1,6 @@
 import { Box } from '@mui/material';
 import { GraphLegend } from './GraphLegend';
 
-
 export type Field = 'variableBorrowRate' | 'utilizationRate';
 
 export type Fields = { name: Field; color: string; text: string }[];

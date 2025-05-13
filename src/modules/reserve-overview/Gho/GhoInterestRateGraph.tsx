@@ -23,7 +23,6 @@ export type GhoInterestRate = {
   stakingDiscount: number;
 };
 
-
 // accessors
 const getDate = (d: GhoInterestRate) => {
   const date = new Date(d.date);
@@ -238,11 +237,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
         </svg>
 
         {/* Tooltip Info */}
-        {tooltipData && (
-          <div>
-            
-          </div>
-        )}
+        {tooltipData && <div></div>}
       </>
     );
   }

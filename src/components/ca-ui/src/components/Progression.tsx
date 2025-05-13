@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Loader from "./shared/Loader";
-import { VIDEO_LINKS, IMAGE_LINKS } from "../utils/assetList";
-import { getTextFromStep } from "../utils/getTextFromSteps";
-import { Checkbox, CheckboxControl, CheckboxLabel } from "@ark-ui/react";
-import type { ProgressStep } from "@arcana/ca-sdk";
-import { MainContainerBase } from "./shared/Container";
-import { getManualStepsStatus } from "src/libs/web3-data-provider/Web3Provider";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import Loader from './shared/Loader';
+import { VIDEO_LINKS, IMAGE_LINKS } from '../utils/assetList';
+import { getTextFromStep } from '../utils/getTextFromSteps';
+import { Checkbox, CheckboxControl, CheckboxLabel } from '@ark-ui/react';
+import type { ProgressStep } from '@arcana/ca-sdk';
+import { MainContainerBase } from './shared/Container';
+import { getManualStepsStatus } from 'src/libs/web3-data-provider/Web3Provider';
 
 const MainContainer = styled(MainContainerBase)``;
 
@@ -47,11 +47,10 @@ const StyledCheckbox = styled.div`
 
 const StyledCheckboxLabel = styled(CheckboxLabel)<{ disabled: boolean }>`
   text-align: start;
-  font-family: "Nohemi", sans-serif;
+  font-family: 'Nohemi', sans-serif;
   font-weight: 500;
   font-size: 1.25rem;
-  color: ${({ theme, disabled }) =>
-    disabled ? "#829299" : theme.primaryColor};
+  color: ${({ theme, disabled }) => (disabled ? '#829299' : theme.primaryColor)};
 `;
 
 const StyledCheckboxControl = styled(CheckboxControl)<{ checked: boolean }>`
@@ -76,7 +75,7 @@ const StyledLink = styled.a`
   display: flex;
   align-items: center;
   gap: 4px;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.25rem;
   font-weight: 500;
   color: ${({ theme }) => theme.secondaryColor};
@@ -89,10 +88,10 @@ const StyledLink = styled.a`
 `;
 
 const stepList = [
-  "INTENT_SUBMITTED",
-  "INTENT_COLLECTION_COMPLETE",
-  "INTENT_DEPOSITS_CONFIRMED",
-  "INTENT_FULFILLED",
+  'INTENT_SUBMITTED',
+  'INTENT_COLLECTION_COMPLETE',
+  'INTENT_DEPOSITS_CONFIRMED',
+  'INTENT_FULFILLED',
 ];
 
 const Progress: React.FC<{
@@ -100,27 +99,27 @@ const Progress: React.FC<{
   $display: boolean;
   close: () => void;
 }> = ({ intentSteps, $display, close }) => {
-  const basicSteps = intentSteps.filter((s) => stepList.includes(s.type)); 
+  const basicSteps = intentSteps.filter((s) => stepList.includes(s.type));
   const extraSteps: Array<ProgressStep & { done: boolean }> = [
-    { type: "MANUAL_STEP_1", typeID: "manual_step_1", done: getManualStepsStatus()[0].done },
-    { type: "MANUAL_STEP_2", typeID: "manual_step_2", done: getManualStepsStatus()[1].done },
+    { type: 'MANUAL_STEP_1', typeID: 'manual_step_1', done: getManualStepsStatus()[0].done },
+    { type: 'MANUAL_STEP_2', typeID: 'manual_step_2', done: getManualStepsStatus()[1].done },
   ];
-  console.log("extraSteps Status: ", extraSteps[0].done, extraSteps[1].done);
+  console.log('extraSteps Status: ', extraSteps[0].done, extraSteps[1].done);
   const steps = [...basicSteps, ...extraSteps];
   const incompleteStep = steps.findIndex((s) => s.done === false);
   const [manualDone, setManualDone] = useState(false);
-  console.log("incompleteStep: ", incompleteStep);
+  console.log('incompleteStep: ', incompleteStep);
   const currentStep = incompleteStep === -1 ? steps.length : incompleteStep + 1;
-  const inProgressState = incompleteStep === -1 ? "success" : "inprogress";
+  const inProgressState = incompleteStep === -1 ? 'success' : 'inprogress';
   const explorerURL =
     // @ts-ignore
     steps.find((s) => {
-      return s.type === "INTENT_SUBMITTED" && s.done === true;
+      return s.type === 'INTENT_SUBMITTED' && s.done === true;
       // @ts-ignore
-    })?.data.explorerURL ?? "";
+    })?.data.explorerURL ?? '';
 
   useEffect(() => {
-    if (inProgressState === "success" && $display) {
+    if (inProgressState === 'success' && $display) {
       window.setTimeout(() => {
         close();
       }, 1000);
@@ -128,29 +127,28 @@ const Progress: React.FC<{
   }, [inProgressState]);
 
   const checkManualSteps = () => {
-    getManualStepsStatus()[0].done == true ? 
-      console.log("manual step 1 donee") : null;
-    getManualStepsStatus()[1].done == true ?
-      (setManualDone(true),
-      window.setTimeout(() => {
-        close()
-      }, 1000), console.log("manual step 2 donee", manualDone)
-    ): null;
+    getManualStepsStatus()[0].done == true ? console.log('manual step 1 donee') : null;
+    getManualStepsStatus()[1].done == true
+      ? (setManualDone(true),
+        window.setTimeout(() => {
+          close();
+        }, 1000),
+        console.log('manual step 2 donee', manualDone))
+      : null;
   };
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log("checking manual steps");
+      console.log('checking manual steps');
       checkManualSteps();
     }, 1000);
     return () => clearInterval(interval);
-  }
-  , [])
+  }, []);
 
   return (
     <MainContainer $display={$display}>
-      {inProgressState === "success" && manualDone == false ? (
+      {inProgressState === 'success' && manualDone == false ? (
         <Video
-          src={VIDEO_LINKS["success"]}
+          src={VIDEO_LINKS['success']}
           autoPlay
           muted
           onContextMenu={(e) => e.preventDefault()}
@@ -166,18 +164,12 @@ const Progress: React.FC<{
           <Checkbox.Root
             value={step.type}
             checked={step.done || false}
-            disabled={
-              index !== 0 && !step.done && !intentSteps[index - 1]?.done
-            }
+            disabled={index !== 0 && !step.done && !intentSteps[index - 1]?.done}
             key={index}
           >
             <StyledCheckbox>
               <StyledCheckboxLabel
-                disabled={
-                  inProgressState != "success" &&
-                  !step.done &&
-                  index > incompleteStep
-                }
+                disabled={inProgressState != 'success' && !step.done && index > incompleteStep}
               >
                 {getTextFromStep(step.type, step.done || false)}
               </StyledCheckboxLabel>
@@ -189,22 +181,12 @@ const Progress: React.FC<{
                       <Loader $width="4px" />
                     </LoaderWrap>
                   ) : (
-                    "-"
+                    '-'
                   )
                 ) : step.done === true ? (
-                  <img
-                    src={IMAGE_LINKS["success"]}
-                    alt="Success"
-                    width={20}
-                    height={20}
-                  />
+                  <img src={IMAGE_LINKS['success']} alt="Success" width={20} height={20} />
                 ) : (
-                  <img
-                    src={IMAGE_LINKS["error"]}
-                    alt="Error"
-                    width={20}
-                    height={20}
-                  />
+                  <img src={IMAGE_LINKS['error']} alt="Error" width={20} height={20} />
                 )}
               </StyledCheckboxControl>
             </StyledCheckbox>
@@ -213,12 +195,7 @@ const Progress: React.FC<{
         {explorerURL && (
           <LinkContainer>
             <StyledLink href={explorerURL} target="_blank">
-              <img
-                src={IMAGE_LINKS["link"]}
-                alt="Link"
-                width={20}
-                height={20}
-              />
+              <img src={IMAGE_LINKS['link']} alt="Link" width={20} height={20} />
               <span>View Intent</span>
             </StyledLink>
           </LinkContainer>

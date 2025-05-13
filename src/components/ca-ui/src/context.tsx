@@ -1,5 +1,5 @@
-import React from "react";
-import { CA } from "@arcana/ca-sdk";
+import React from 'react';
+import { CA } from '@arcana/ca-sdk';
 
 export const CAContext = React.createContext<{
   ca: CA | null;
@@ -13,7 +13,7 @@ export const CAErrorContext = React.createContext<{
   error: null | string;
   setError: (err: string) => void;
 }>({
-  error: "",
+  error: '',
   setError: () => {},
 });
 
