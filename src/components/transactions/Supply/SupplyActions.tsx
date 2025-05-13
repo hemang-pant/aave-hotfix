@@ -32,7 +32,7 @@ export interface SupplyActionProps extends BoxProps {
 let supplyVal = Decimal('0');
 export const getSupplyVal = () => {
   return supplyVal;
-}
+};
 
 export const SupplyActions = React.memo(
   ({
@@ -82,8 +82,7 @@ export const SupplyActions = React.memo(
 
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
-
-    const { bridge } = useCAFn()
+    const { bridge } = useCAFn();
     const {
       data: approvedAmount,
       refetch: fetchApprovedAmount,
@@ -148,26 +147,45 @@ export const SupplyActions = React.memo(
         setMainTxState({ ...mainTxState, loading: true });
         let response: TransactionResponse;
         let action = ProtocolAction.default;
-        if(symbol == 'USD₮0'){
-          symbol = "USDT"
+        if (symbol == 'USD₮0' || symbol == 'USDt') {
+          symbol = 'USDT';
         }
-        if(
-          Number(caBalances?.find((balance) => balance.symbol === (symbol == "WETH"? "ETH": symbol))?.
-          breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)?.balance)
-          < Number(amountToSupply)
-        ){
-          console.log("wallet Balance: ", caBalances?.find((balance) => balance.symbol === (symbol == "WETH"? "ETH": symbol))?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)?.balance)
-          console.log("amount to supply: ", amountToSupply)
-          const decimalAmount = new Decimal(amountToSupply).sub(caBalances?.find((balance) => balance.symbol === (symbol == "WETH"? "ETH": symbol))?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)?.balance!).add(symbol != "WETH" ? '0': '0.000001').toString();
+        if (
+          Number(
+            caBalances
+              ?.find((balance) => balance.symbol === (symbol == 'WETH' ? 'ETH' : symbol))
+              ?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)
+              ?.balance
+          ) < Number(amountToSupply)
+        ) {
+          console.log(
+            'wallet Balance: ',
+            caBalances
+              ?.find((balance) => balance.symbol === (symbol == 'WETH' ? 'ETH' : symbol))
+              ?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)
+              ?.balance
+          );
+          console.log('amount to supply: ', amountToSupply);
+          const decimalAmount = new Decimal(amountToSupply)
+            .sub(
+              caBalances
+                ?.find((balance) => balance.symbol === (symbol == 'WETH' ? 'ETH' : symbol))
+                ?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)
+                ?.balance!
+            )
+            .add(symbol != 'WETH' ? '0' : '0.000001')
+            .toString();
           supplyVal = new Decimal(amountToSupply);
-          if(symbol == "WETH" || symbol == "weth"){symbol = "ETH"}
-          await bridge(
-            {
-              amount: decimalAmount,
-              token: ['USDC', 'USDT', 'ETH', 'usdc', 'usdt', 'eth'].find((token) => token === symbol) as 'USDC' | 'USDT' | 'ETH' | 'usdc' | 'usdt' | 'eth',
-              chain: currentMarketData.chainId,
-            }
-          )
+          if (symbol == 'WETH' || symbol == 'weth') {
+            symbol = 'ETH';
+          }
+          await bridge({
+            amount: decimalAmount,
+            token: ['USDC', 'USDT', 'ETH', 'usdc', 'usdt', 'eth'].find(
+              (token) => token === symbol
+            ) as 'USDC' | 'USDT' | 'ETH' | 'usdc' | 'usdt' | 'eth',
+            chain: currentMarketData.chainId,
+          });
         }
         // determine if approval is signature or transaction
         // checking user preference is not sufficient because permit may be available but the user has an existing approval
@@ -242,5 +260,3 @@ export const SupplyActions = React.memo(
     );
   }
 );
-
-
