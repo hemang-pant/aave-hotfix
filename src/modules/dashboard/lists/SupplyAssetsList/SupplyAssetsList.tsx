@@ -173,7 +173,11 @@ export const SupplyAssetsList = () => {
     if (CA.getSupportedChains().find((chain) => chain.id === currentChainId)) {
       reserve.availableToDepositUSD =
         caBalances
-          ?.find((balance) => balance.symbol === (reserve.symbol == 'USD₮0' ? 'USDT' : reserve.symbol))
+          ?.find(
+            (balance) =>
+              balance.symbol ===
+              (reserve.symbol == 'USD₮0' || reserve.symbol == 'USDt' ? 'USDT' : reserve.symbol)
+          )
           ?.balanceInFiat?.toString() || '0';
     }
     if (reserve.availableToDepositUSD !== '0') {
