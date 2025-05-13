@@ -240,7 +240,13 @@ export const SupplyModalContent = React.memo(
                 (chain) => chain.id === currentMarketData.chainId
               )
                 ? balances?.find(
-                    (b) => b.symbol === (poolReserve.symbol == 'WETH' ? 'ETH' : (poolReserve.symbol == 'USD₮0' ? 'USDT' : poolReserve.symbol))
+                    (b) =>
+                      b.symbol ===
+                      (poolReserve.symbol == 'WETH'
+                        ? 'ETH'
+                        : poolReserve.symbol == 'USD₮0' || poolReserve.symbol == 'USDt'
+                        ? 'USDT'
+                        : poolReserve.symbol)
                   )?.balance
                 : maxAmountToSupply,
               symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
@@ -255,7 +261,13 @@ export const SupplyModalContent = React.memo(
           maxValue={
             CA.getSupportedChains().find((chain) => chain.id === currentMarketData.chainId)
               ? balances?.find(
-                  (b) => b.symbol === (poolReserve.symbol == 'WETH' ? 'ETH' : (poolReserve.symbol == 'USD₮0' ? 'USDT' : poolReserve.symbol))
+                  (b) =>
+                    b.symbol ===
+                    (poolReserve.symbol == 'WETH'
+                      ? 'ETH'
+                      : poolReserve.symbol == 'USD₮0' || poolReserve.symbol == 'USDt'
+                      ? 'USDT'
+                      : poolReserve.symbol)
                 )?.balance
               : maxAmountToSupply
           }
