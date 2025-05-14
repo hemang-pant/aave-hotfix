@@ -33,6 +33,8 @@
   "dependencies": {
     "@aave/contract-helpers": "1.33.1",
     "@aave/math-utils": "1.33.1",
+    "@arcana/auth": "^1.0.12-beta.13",
+    "@arcana/auth-wagmi": "^3.0.0",
     "@arcana/ca-sdk": "^0.0.7-beta.1",
     "@ark-ui/react": "^5.0.0",
     "@bgd-labs/aave-address-book": "^4.18.1",

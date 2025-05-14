@@ -13,6 +13,8 @@ import { createConfig, CreateConfigParameters, http } from 'wagmi';
 import { injected, safe } from 'wagmi/connectors';
 
 import { prodNetworkConfig, testnetConfig } from './networksConfig';
+import { AuthProvider } from '@arcana/auth';
+import { ArcanaConnector } from '@arcana/auth-wagmi';
 
 const testnetChains = Object.values(testnetConfig).map((config) => config.wagmiChain) as [
   Chain,
@@ -43,6 +45,10 @@ const forkChain: Chain = {
 if (FORK_ENABLED) {
   prodChains = [forkChain, ...prodChains];
 }
+const auth = new AuthProvider(`xar_test_58eeafa5256e97d4e58e872b283551b655104e1f`)
+const arcanaAuth = ArcanaConnector({
+    auth: auth as any
+})
 
 const defaultConfig = {
   walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
@@ -70,6 +76,7 @@ const buildTransports = (chains: CreateConfigParameters['chains']) =>
 const prodCkConfig = getDefaultConfig({
   chains: ENABLE_TESTNET ? testnetChains : prodChains,
   transports: ENABLE_TESTNET ? undefined : buildTransports(prodChains),
+  connectors: [arcanaAuth],
   ...defaultConfig,
 });
 
