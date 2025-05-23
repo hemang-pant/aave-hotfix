@@ -325,7 +325,7 @@ const IntentView: React.FC<{
               {intent?.token?.symbol && rates?.[intent.token.symbol] && (
                 <TotalAtDestination>
                   ~
-                  {(Number(intent.sourcesTotal || 0) / Number(rates[intent.token.symbol])).toFixed(
+                  {(Number(Decimal(getSupplyVal()).add(intent.fees.total) || 0) / Number(rates[intent.token.symbol])).toFixed(
                     2
                   )}{' '}
                   USD
@@ -457,7 +457,7 @@ const IntentView: React.FC<{
         </HeaderLeft>
         <HeaderRight>
           <TotalFeesValue>
-            {getReadableNumber(intent.sourcesTotal)} {intent?.token?.symbol}
+            {getReadableNumber(new Decimal(getSupplyVal()).add(intent.fees.total).toString())} {intent?.token?.symbol}
           </TotalFeesValue>
 
           {rates?.[intent?.token?.symbol] && (
