@@ -18,7 +18,7 @@ export const CAProvider = ({
   children,
   network,
 }: {
-  network?: 'testnet' | 'dev';
+  network?: 'mainnet' | 'dev';
   children?: React.ReactNode;
 }) => {
   const provider = getCA(network);
