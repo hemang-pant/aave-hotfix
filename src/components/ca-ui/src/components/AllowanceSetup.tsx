@@ -175,17 +175,17 @@ const AllowanceSetup: React.FC<{
       <Card>
         {sources.map((src, index: number) => (
           <Container key={index}>
-            <Checkbox.Root value={src.chainName} checked={src.done}>
+            <Checkbox.Root value={`chainName${index}`} checked={src.done}>
               <StyledCheckbox>
                 <StyledCheckboxLabel disabled={index >= currentStep}>
                   <FlexContainer>
                     <RelativeContainer>
                       <Logo src={src.token.logo} alt="Token Logo" />
-                      <ChainLogo src={src.chainLogo} alt="Chain Logo" />
+                      <ChainLogo src={`src.chainLogo${index}`} alt="Chain Logo" />
                     </RelativeContainer>
                     <TokenDetails>
                       <TokenName>{src.token.name}</TokenName>
-                      <ChainName>{src.chainName}</ChainName>
+                      <ChainName>{`src.chainName${index}`}</ChainName>
                     </TokenDetails>
                   </FlexContainer>
                 </StyledCheckboxLabel>
