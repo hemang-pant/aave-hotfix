@@ -29,12 +29,25 @@ function useWriteContract<config extends Config = ResolvedRegister['config'], co
         variables as Parameters<typeof originalWriteContractAsync>[0]
       );
       try {
-        await ca.preprocess({
+        await 
+        // ca.preprocess({
+        //   to: variables.address,
+        //   data: data,
+        //   value:
+        //     typeof variables.value === 'bigint' ? `0x${variables.value.toString(16)}` : undefined,
+        // });
+        ca.handleEVMTx({
+        method: "eth_sendTransaction",
+        params: [{
           to: variables.address,
           data: data,
-          value:
-            typeof variables.value === 'bigint' ? `0x${variables.value.toString(16)}` : undefined,
-        });
+          value: typeof variables.value === 'bigint' ? `0x${variables.value.toString(16)}` : undefined,
+        }],
+      }, {
+        skipTx: true,
+        bridge: false,
+        gas: BigInt(0),
+      })
         return await originalWriteContractAsync(variables, options);
       } catch (e: any) {
         setError(e.message);
@@ -52,11 +65,23 @@ function useWriteContract<config extends Config = ResolvedRegister['config'], co
     if (ca && ready) {
       const data = encodeFunctionData(variables as Parameters<typeof originalWriteContract>[0]);
 
-      ca.preprocess({
-        to: variables.address,
-        data: data,
-        value:
-          typeof variables.value === 'bigint' ? `0x${variables.value.toString(16)}` : undefined,
+      // ca.preprocess({
+      //   to: variables.address,
+      //   data: data,
+      //   value:
+      //     typeof variables.value === 'bigint' ? `0x${variables.value.toString(16)}` : undefined,
+      // })
+      ca.handleEVMTx({
+        method: "eth_sendTransaction",
+        params: [{
+          to: variables.address,
+          data: data,
+          value: typeof variables.value === 'bigint' ? `0x${variables.value.toString(16)}` : undefined,
+        }],
+      }, {
+        skipTx: true,
+        bridge: false,
+        gas: BigInt(0),
       })
         .then(() => {
           return originalWriteContract(variables, options);

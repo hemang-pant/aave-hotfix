@@ -25,11 +25,20 @@ function useSendTransaction<config extends Config = ResolvedRegister['config'], 
   ): Promise<`0x${string}`> => {
     if (ca && ready) {
       try {
-        await ca.preprocess({
+        await ca.handleEVMTx({
+        method: "eth_sendTransaction",
+        params: [{
           to: variables.to ? variables.to : undefined,
           data: variables.data ? variables.data : undefined,
-          value: variables.value ? `0x${variables.value.toString(16)}` : undefined,
-        });
+          value: variables.value
+            ? `0x${variables.value.toString(16)}`
+            : undefined,
+        }],
+      }, {
+        skipTx: true,
+        bridge: false,
+        gas: BigInt(0),
+      })
         return await originalSendTxAsync(
           variables as Parameters<typeof r.sendTransaction>[0],
           options
@@ -54,10 +63,19 @@ function useSendTransaction<config extends Config = ResolvedRegister['config'], 
     options?: Parameters<typeof r.sendTransaction>[1]
   ) => {
     if (ca && ready) {
-      ca.preprocess({
-        to: variables.to ? variables.to : undefined,
-        data: variables.data ? variables.data : undefined,
-        value: variables.value ? `0x${variables.value.toString(16)}` : undefined,
+      ca.handleEVMTx({
+        method: "eth_sendTransaction",
+        params: [{
+          to: variables.to ? variables.to : undefined,
+          data: variables.data ? variables.data : undefined,
+          value: variables.value
+            ? `0x${variables.value.toString(16)}`
+            : undefined,
+        }],
+      }, {
+        skipTx: true,
+        bridge: false,
+        gas: BigInt(0),
       })
         .then(() => {
           return originalSendTx(variables as Parameters<typeof r.sendTransaction>[0], options);

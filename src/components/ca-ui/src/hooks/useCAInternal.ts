@@ -111,7 +111,7 @@ const useCAInternal = (ca: CA) => {
         if (data.type === 'ALLOWANCE_APPROVAL_MINED') {
           const tid = data.typeID.split('_')[1];
           const chainID = parseInt(tid, 10);
-          const v = allowanceP.current.sources.find((a) => a.chainID === chainID);
+          const v = allowanceP.current.sources.find((a) => a.chain.id === chainID);
           if (v) {
             v.done = true;
           }

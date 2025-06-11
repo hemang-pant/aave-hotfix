@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { CAContext, CAErrorContext } from '../context';
 import { ALLOWED_TOKENS } from '../utils/constants';
 
+
 export const useCA = () => {
   const ca = useContext(CAContext);
   return ca;
@@ -21,10 +22,15 @@ export const useCAFn = () => {
       throw new Error('ca not ready');
     }
     try {
-      let fn = ca.transfer().to(params.to).amount(params.amount).token(params.token);
-      if (params.chain) {
-        fn = fn.chain(params.chain);
-      }
+      const fn = await ca.transfer({
+        to: params.to,
+        amount: params.amount,
+        chainID: params.chain!,
+        token: params.token,
+            })
+      // if (params.chain) {
+      //   fn = fn.chain(params.chain);
+      // }
       return await fn.exec();
     } catch (e) {
       if (e instanceof Error && 'message' in e) {
@@ -45,13 +51,21 @@ export const useCAFn = () => {
     }
 
     try {
-      let fn = ca.bridge().amount(params.amount).token(params.token);
-      if (params.chain) {
-        fn = fn.chain(params.chain);
-      }
-      if (params.gas !== undefined) {
-        fn = fn.gas(params.gas);
-      }
+      const fn = await ca.bridge(
+        {
+          amount: params.amount,
+          token: params.token,
+          chainID: params.chain!,
+          gas: params.gas !== undefined ? params.gas : undefined,
+        }
+      )
+      
+      // if (params.chain) {
+      //   fn = fn.chain(params.chain);
+      // }
+      // if (params.gas !== undefined) {
+      //   fn = fn.gas(params.gas);
+      // }
       return await fn.exec();
     } catch (e) {
       if (e instanceof Error && 'message' in e) {

@@ -112,16 +112,16 @@ const useBalance = ({ symbol }: UseBalanceParams): UseBalanceReturn => {
     return {
       loading: false,
       data: {
-        decimals: val.decimals,
+        decimals: val.breakdown[0].decimals,
         formatted: val.balance,
         symbol: val.symbol.toUpperCase(),
-        value: convertToDecimals(val.balance, val.decimals),
+        value: convertToDecimals(val.balance, val.breakdown[0].decimals),
         breakdown: val.breakdown.map((b) => {
           return {
             chain: b.chain,
             formatted: b.balance,
             address: b.contractAddress,
-            value: convertToDecimals(b.balance, val.decimals),
+            value: convertToDecimals(b.balance, val.breakdown[0].decimals),
           };
         }),
       },
@@ -162,16 +162,16 @@ const useBalances = (): UseBalancesReturn => {
       loading: false,
       data: data.map((v) => {
         return {
-          decimals: v.decimals,
+          decimals: v.breakdown[0].decimals,
           formatted: v.balance,
           symbol: v.symbol.toUpperCase(),
-          value: convertToDecimals(v.balance, v.decimals),
+          value: convertToDecimals(v.balance, v.breakdown[0].decimals),
           breakdown: v.breakdown.map((b) => {
             return {
               chain: b.chain,
               formatted: b.balance,
               address: b.contractAddress,
-              value: convertToDecimals(b.balance, v.decimals),
+              value: convertToDecimals(b.balance, v.breakdown[0].decimals),
             };
           }),
         };
