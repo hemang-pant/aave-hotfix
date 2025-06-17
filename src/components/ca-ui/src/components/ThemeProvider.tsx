@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { lightTheme, darkTheme } from '../utils/theme';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { ThemeProvider as StyledThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "../utils/theme";
+import { ThemeType } from "../types";
 
 const ThemeContext = createContext({
   toggleTheme: () => {},
@@ -9,11 +10,11 @@ const ThemeContext = createContext({
 
 export const useTheme = () => useContext(ThemeContext);
 
-const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Fallback to system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
+const ThemeProvider: React.FC<{ children: React.ReactNode, theme?: ThemeType }> = ({
+  children,
+  theme
+}) => {
+  const [isDarkMode, setIsDarkMode] = useState(theme === "dark");
 
   const toggleTheme = () => {
     setIsDarkMode((prev) => {
@@ -23,19 +24,24 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   };
 
   useEffect(() => {
-    const handleMediaChange = (event: MediaQueryListEvent) => {
-      const theme = event.matches ? 'dark' : 'light';
-      setIsDarkMode(theme == 'dark');
-    };
-
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', handleMediaChange);
-
-    //good house keeping to remove listener, good article here https://www.pluralsight.com/guides/how-to-cleanup-event-listeners-react
-    return () => {
-      window
-        .matchMedia('(prefers-color-scheme: dark)')
-        .removeEventListener('change', handleMediaChange);
-    };
+    if(!theme) {
+      const handleMediaChange = (event: MediaQueryListEvent) => {
+        const theme = event.matches ? "dark" : "light";
+        setIsDarkMode(theme == "dark");
+      };
+  
+      if (window) {
+        window
+          .matchMedia("(prefers-color-scheme: dark)")
+          .addEventListener("change", handleMediaChange);
+  
+        return () => {
+          window
+            .matchMedia("(prefers-color-scheme: dark)")
+            .removeEventListener("change", handleMediaChange);
+        };
+      }
+    }
   }, []);
 
   return (

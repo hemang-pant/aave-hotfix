@@ -1,7 +1,6 @@
-import { useContext } from 'react';
-import { CAContext, CAErrorContext } from '../context';
-import { ALLOWED_TOKENS } from '../utils/constants';
-
+import { useContext } from "react";
+import { CAContext, CAErrorContext } from "../context";
+import { ALLOWED_TOKENS } from "../utils/constants";
 
 export const useCA = () => {
   const ca = useContext(CAContext);
@@ -16,24 +15,21 @@ export const useCAFn = () => {
     to: `0x${string}`;
     amount: string;
     token: ALLOWED_TOKENS;
-    chain?: number;
+    chain: number;
   }) => {
     if (!ready || !ca) {
-      throw new Error('ca not ready');
+      throw new Error("ca not ready");
     }
     try {
-      const fn = await ca.transfer({
+      let fn = await ca.transfer({
         to: params.to,
         amount: params.amount,
-        chainID: params.chain!,
+        chainID: params.chain,
         token: params.token,
-            })
-      // if (params.chain) {
-      //   fn = fn.chain(params.chain);
-      // }
+      });
       return await fn.exec();
     } catch (e) {
-      if (e instanceof Error && 'message' in e) {
+      if (e instanceof Error && "message" in e) {
         setError(e.message);
       }
       throw e;
@@ -43,37 +39,28 @@ export const useCAFn = () => {
   const bridge = async (params: {
     amount: string;
     token: ALLOWED_TOKENS;
-    chain?: number;
+    chain: number;
     gas?: bigint;
   }) => {
     if (!ready || !ca) {
-      throw new Error('ca not ready');
+      throw new Error("ca not ready");
     }
 
     try {
-      const fn = await ca.bridge(
-        {
-          amount: params.amount,
-          token: params.token,
-          chainID: params.chain!,
-          gas: params.gas !== undefined ? params.gas : undefined,
-        }
-      )
-      
-      // if (params.chain) {
-      //   fn = fn.chain(params.chain);
-      // }
-      // if (params.gas !== undefined) {
-      //   fn = fn.gas(params.gas);
-      // }
-      return await fn.exec();
+      let fn = await ca.bridge({
+        token: params.token,
+        amount: params.amount,
+        chainID: params.chain,
+        gas: params.gas,
+      });
+      return fn.exec();
     } catch (e) {
-      if (e instanceof Error && 'message' in e) {
+      if (e instanceof Error && "message" in e) {
         setError(e.message);
       }
       throw e;
     }
   };
 
-  return { bridge, transfer };
+  return { bridge, transfer, ready };
 };

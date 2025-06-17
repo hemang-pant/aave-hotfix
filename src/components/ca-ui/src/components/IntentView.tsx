@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Accordion } from '@ark-ui/react';
-import { getCoinbasePrices } from '../utils/coinbase';
-import AppTooltip from './shared/Tooltip';
-import { MainContainerBase } from './shared/Container';
-import { IMAGE_LINKS } from '../utils/assetList';
-import { getReadableNumber } from '../utils/commonFunction';
-import type { Intent } from '@arcana/ca-sdk';
-import { getSupplyVal } from 'src/components/transactions/Supply/SupplyActions';
-import { useUnifiedBalance } from '../hooks/useUnifiedBalance';
-import Decimal from 'decimal.js';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { Accordion } from "@ark-ui/react";
+import { getCoinbasePrices } from "../utils/coinbase";
+import AppTooltip from "./shared/Tooltip";
+import { MainContainerBase } from "./shared/Container";
+import { IMAGE_LINKS } from "../utils/assetList";
+import { getReadableNumber } from "../utils/commonFunction";
+import type { Intent } from "@arcana/ca-sdk";
+import Decimal from "decimal.js";
 
-const MainContainer = styled(MainContainerBase)``;
+const MainContainer = styled(MainContainerBase)`
+  gap: 0.75rem;
+  display: flex;
+  flex-direction: column;
+`;
 const Root = styled(Accordion.Root)`
   display: flex;
   flex-direction: column;
@@ -50,36 +52,36 @@ const HeaderRight = styled.div`
 `;
 
 const TooltipMessage = styled.span`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 1rem;
   font-weight: 400;
   color: ${({ theme }) => theme.secondaryTitleColor};
 `;
 
 const TotalFees = styled.span`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 1rem;
   font-weight: 500;
   color: ${({ theme }) => theme.primaryColor};
 `;
 
 const TotalAtDestination = styled.span`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.875rem;
   font-weight: 500;
   color: ${({ theme }) => theme.primaryTitleColor};
 `;
 
 const TotalFeesValue = styled.span`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 1rem;
   font-weight: 500;
   color: ${({ theme }) => theme.primaryColor};
 `;
 
 const TotalAtDestinationValue = styled.span`
-  font-family: 'Inter', sans-serif;
-  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
   font-weight: 500;
   color: ${({ theme }) => theme.primaryTitleColor};
 `;
@@ -88,7 +90,7 @@ const ViewBreakupButton = styled(Accordion.ItemTrigger)`
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.875rem;
   font-weight: 500;
   color: ${({ theme }) => theme.secondaryColor};
@@ -103,18 +105,18 @@ const ViewBreakupButton = styled(Accordion.ItemTrigger)`
   }
 `;
 
-// const AccordionContent = styled(Accordion.ItemContent)`
-//   padding-top: 0.75rem;
-// `;
+const AccordionContent = styled(Accordion.ItemContent)`
+  padding-top: 0.75rem;
+`;
 
 const FeeDetails = styled.div`
   background: ${({ theme }) => theme.cardDetailsBackGround};
   border: ${({ theme }) => `1px solid ${theme.backgroundColor}`};
-  border-radius: 0.5rem;
+  border-radius: 0.6rem;
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 `;
 
 const FeeRow = styled.div`
@@ -125,14 +127,14 @@ const FeeRow = styled.div`
 `;
 
 const Label = styled.div`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
   color: ${({ theme }) => theme.secondaryTitleColor};
 `;
 
 const Value = styled.div`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.875rem;
   font-weight: 500;
   color: ${({ theme }) => theme.primaryColor};
@@ -142,11 +144,11 @@ const Content = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 `;
 
 const Title = styled.div`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 1rem;
   font-weight: 400;
   color: ${({ theme }) => theme.secondaryTitleColor};
@@ -159,7 +161,7 @@ const ChainDetails = styled.div`
 `;
 
 const Chain = styled.div`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 1rem;
   font-weight: 500;
   color: ${({ theme }) => theme.primaryColor};
@@ -219,7 +221,7 @@ const InfoImg = styled.img`
 `;
 
 const TokenName = styled.span`
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
   color: ${({ theme }) => theme.primaryColor};
@@ -227,7 +229,7 @@ const TokenName = styled.span`
 
 const AllowanceAmount = styled.div`
   text-align: right;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.875rem;
   font-weight: 500;
   color: ${({ theme }) => theme.primaryColor};
@@ -240,18 +242,18 @@ const ButtonWrap = styled.div`
   gap: 10px;
 `;
 
-const Button = styled.button<{ variant?: 'primary' | 'secondary' }>`
+const Button = styled.button<{ variant?: "primary" | "secondary" }>`
   margin-top: 20px;
   padding: 15px 20px;
   width: 100%;
   background: ${({ theme, variant }) =>
-    variant === 'secondary' ? `transparent` : theme.primaryColor};
+    variant === "secondary" ? `transparent` : theme.primaryColor};
   color: ${({ theme, variant }) =>
-    variant === 'secondary' ? theme.primaryColor : theme.buttonTextColor};
+    variant === "secondary" ? theme.primaryColor : theme.buttonTextColor};
   border: ${({ theme }) => `2px solid ${theme.primaryColor}`};
   border-radius: 25px;
   cursor: pointer;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.875rem;
   font-weight: 600;
   transition: background 0.3s ease;
@@ -275,10 +277,6 @@ const IntentView: React.FC<{
   $display: boolean;
 }> = ({ allow, deny, intent, intentRefreshing, $display }) => {
   const [rates, setRates] = useState<Record<string, string>>({});
-  const balances = useUnifiedBalance().balances;
-
-  const [showFees, setShowFees] = useState(false);
-  const [showSources, setShowSources] = useState(false);
 
   useEffect(() => {
     const fetchRates = async () => {
@@ -304,147 +302,200 @@ const IntentView: React.FC<{
       <Content>
         <Title>Destination</Title>
         <ChainDetails>
-          <DestinationChainLogo src={intent.destination.chainLogo} alt="Chain Logo" />
+          <DestinationChainLogo
+            src={intent.destination.chainLogo}
+            alt="Chain Logo"
+          />
           <Chain>{intent.destination.chainName}</Chain>
         </ChainDetails>
       </Content>
-      <Root defaultValue={['sources']} collapsible>
-        <AccordionWrapper key="sources" value="sources">
+      <Root defaultValue={["sources"]} collapsible>
+        <AccordionWrapper key={"sources"} value="sources">
           <Header>
             <HeaderLeft>
               <TooltipMessage>Spend</TooltipMessage>
               <AppTooltip message="Total Spend">
-                <InfoImg src={IMAGE_LINKS['info']} alt="Info" height={18} width={18} />
+                <InfoImg
+                  src={IMAGE_LINKS["info"]}
+                  alt="Info"
+                  height={18}
+                  width={18}
+                />
               </AppTooltip>
             </HeaderLeft>
             <HeaderRight>
               <TotalFees>
-                {getReadableNumber(new Decimal(getSupplyVal()).add(intent.fees.total).toString())}{' '}
+                {getReadableNumber(
+                  new Decimal(intent.sourcesTotal)
+                    .sub(intent.fees.total)
+                    .toString()
+                )}{" "}
                 {intent?.token?.symbol}
               </TotalFees>
-              {intent?.token?.symbol && rates?.[intent.token.symbol] && (
+              {rates?.[intent?.token?.symbol] && (
                 <TotalAtDestination>
-                  ~
-                  {(Number(Decimal(getSupplyVal()).add(intent.fees.total) || 0) / Number(rates[intent.token.symbol])).toFixed(
-                    2
-                  )}{' '}
+                  {(
+                    Number(intent?.sourcesTotal) /
+                    Number(rates[intent?.token?.symbol])
+                  ).toFixed(2)}{" "}
                   USD
                 </TotalAtDestination>
               )}
-              <ViewBreakupButton onClick={() => setShowSources(!showSources)}>
+              <ViewBreakupButton>
                 <span>View Sources</span>
                 <ItemIndicator>
-                  <img src={IMAGE_LINKS['caret']} alt="Arrow" height={12} width={12} />
+                  <img
+                    src={IMAGE_LINKS["caret"]}
+                    alt="Arrow"
+                    height={12}
+                    width={12}
+                  />
                 </ItemIndicator>
               </ViewBreakupButton>
             </HeaderRight>
           </Header>
-          <FeeDetails>
-            {intent?.sources?.map((source) => (
-              <Card key={source.chainID}>
-                <FlexContainer>
-                  <RelativeContainer>
-                    <Logo src={intent?.token?.logo} alt="Token Logo" />
-                    <ChainLogo src={source.chainLogo} alt="Chain Logo" />
-                  </RelativeContainer>
-                  <TokenDetails>
-                    <TokenName>{source.chainName}</TokenName>
-                  </TokenDetails>
-                </FlexContainer>
-                <AllowanceAmount>
-                  {getReadableNumber(source.amount)} {intent?.token?.symbol}
-                </AllowanceAmount>
-              </Card>
-            ))}
-            {Number(
-              balances
-                .find((balance) => balance.symbol === intent?.token?.symbol)
-                ?.breakdown.find((breakdown) => breakdown.chain.id === intent?.destination?.chainID)
-                ?.balance
-            ) > 0 && (
-              <Card key={intent?.destination?.chainID}>
-                <FlexContainer>
-                  <RelativeContainer>
-                    <Logo src={intent?.token?.logo} alt="Token Logo" />
-                    <ChainLogo src={intent?.destination?.chainLogo} alt="Chain Logo" />
-                  </RelativeContainer>
-                  <TokenDetails>
-                    <TokenName>{intent?.destination?.chainName}</TokenName>
-                  </TokenDetails>
-                </FlexContainer>
-                <AllowanceAmount>
-                  {getReadableNumber(
-                    balances
-                      .find((balance) => balance.symbol === intent?.token?.symbol)
-                      ?.breakdown.find(
-                        (breakdown) => breakdown.chain.id === intent?.destination?.chainID
-                      )?.balance!
-                  )}{' '}
-                  {intent?.token?.symbol}
-                </AllowanceAmount>
-              </Card>
-            )}
-          </FeeDetails>
+          <AccordionContent>
+            <FeeDetails>
+              {intent.sources.map((source) => (
+                <Card key={source.chainID}>
+                  <FlexContainer>
+                    <RelativeContainer>
+                      <Logo src={intent.token.logo} alt="Token Logo" />
+                      <ChainLogo src={source.chainLogo} alt="Chain Logo" />
+                    </RelativeContainer>
+                    <TokenDetails>
+                      <TokenName>{source.chainName}</TokenName>
+                    </TokenDetails>
+                  </FlexContainer>
+                  <AllowanceAmount>
+                    {getReadableNumber(source.amount)} {intent.token.symbol}
+                  </AllowanceAmount>
+                </Card>
+              ))}
+            </FeeDetails>
+          </AccordionContent>
         </AccordionWrapper>
-
-        <AccordionWrapper key="fees" value="fees">
+        <AccordionWrapper key={"fees"} value="fees">
           <Header>
             <HeaderLeft>
               <TooltipMessage>Total Fees</TooltipMessage>
               <AppTooltip message="Total Fees">
-                <InfoImg src={IMAGE_LINKS['info']} alt="Info" height={18} width={18} />
+                <InfoImg
+                  src={IMAGE_LINKS["info"]}
+                  alt="Info"
+                  height={18}
+                  width={18}
+                />
               </AppTooltip>
             </HeaderLeft>
             <HeaderRight>
               <TotalFees>
-                {getReadableNumber(intent?.fees?.total)} {intent?.token?.symbol}
+                {getReadableNumber(intent.fees.total)} {intent?.token?.symbol}
               </TotalFees>
-              {intent?.token?.symbol && rates?.[intent.token.symbol] && (
+              {rates?.[intent?.token?.symbol] && (
                 <TotalAtDestination>
-                  ~
-                  {(Number(intent.fees.total || 0) / Number(rates[intent.token.symbol])).toFixed(2)}{' '}
+                  {(
+                    Number(intent.fees.total) /
+                    Number(rates[intent.token.symbol])
+                  ).toFixed(2)}{" "}
                   USD
                 </TotalAtDestination>
               )}
-              <ViewBreakupButton
-                onClick={() => {
-                  setShowFees(!showFees), console.log('showFees', showFees);
-                }}
-              >
+              <ViewBreakupButton>
                 <span>View Breakup</span>
                 <ItemIndicator>
-                  <img src={IMAGE_LINKS['caret']} alt="Arrow" height={12} width={12} />
+                  <img
+                    src={IMAGE_LINKS["caret"]}
+                    alt="Arrow"
+                    height={12}
+                    width={12}
+                  />
                 </ItemIndicator>
               </ViewBreakupButton>
             </HeaderRight>
           </Header>
-
-          <FeeDetails>
-            {[
-              { label: 'CA Gas Fees', value: intent?.fees?.caGas, tooltip: 'Gas Fees' },
-              { label: 'Solver Fees', value: intent?.fees?.solver, tooltip: 'Solver Fees' },
-              { label: 'Protocol Fees', value: intent?.fees?.protocol, tooltip: 'Protocol Fees' },
-              {
-                label: 'Gas Supplied',
-                value: intent?.fees?.gasSupplied,
-                tooltip: 'Extra gas supplied',
-              },
-            ].map(({ label, value, tooltip }) => (
-              <FeeRow key={label}>
+          <AccordionContent>
+            <FeeDetails>
+              <FeeRow>
                 <HeaderLeft>
-                  <Label>{label}:</Label>
-                  <AppTooltip message={tooltip}>
-                    <InfoImg src={IMAGE_LINKS['info']} alt="Info" height={14} width={14} />
+                  <Label>CA Gas Fees: </Label>
+                  <AppTooltip message="Gas Fees (Collection + Fulfilment)">
+                    <InfoImg
+                      src={IMAGE_LINKS["info"]}
+                      alt="Info"
+                      height={14}
+                      width={14}
+                    />
                   </AppTooltip>
                 </HeaderLeft>
                 <HeaderRight>
                   <Value>
-                    {getReadableNumber(value)} {intent?.token?.symbol}
+                    {getReadableNumber(intent.fees.caGas)}{" "}
+                    {intent?.token?.symbol}
                   </Value>
                 </HeaderRight>
               </FeeRow>
-            ))}
-          </FeeDetails>
+              <FeeRow>
+                <HeaderLeft>
+                  <Label>Solver Fees:</Label>
+                  <AppTooltip message="Solver Fees">
+                    <InfoImg
+                      src={IMAGE_LINKS["info"]}
+                      alt="Info"
+                      height={14}
+                      width={14}
+                    />
+                  </AppTooltip>
+                </HeaderLeft>
+                <HeaderRight>
+                  <Value>
+                    {getReadableNumber(intent.fees.solver)}{" "}
+                    {intent?.token?.symbol}
+                  </Value>
+                </HeaderRight>
+              </FeeRow>
+              <FeeRow>
+                <HeaderLeft>
+                  <Label>Protocol Fees:</Label>
+                  <AppTooltip message="Protocol Fees">
+                    <InfoImg
+                      src={IMAGE_LINKS["info"]}
+                      alt="Info"
+                      height={14}
+                      width={14}
+                    />
+                  </AppTooltip>
+                </HeaderLeft>
+                <HeaderRight>
+                  <Value>
+                    {getReadableNumber(intent.fees.protocol)}{" "}
+                    {intent?.token?.symbol}
+                  </Value>
+                </HeaderRight>
+              </FeeRow>
+              <FeeRow>
+                <HeaderLeft>
+                  <Label>Gas Supplied:</Label>
+                  <AppTooltip message="Extra gas supplied">
+                    <InfoImg
+                      src={IMAGE_LINKS["info"]}
+                      alt="Info"
+                      height={14}
+                      width={14}
+                    />
+                  </AppTooltip>
+                </HeaderLeft>
+                <HeaderRight>
+                  <Value>
+                    {" "}
+                    {getReadableNumber(intent.fees.gasSupplied) +
+                      " " +
+                      intent?.token?.symbol}
+                  </Value>
+                </HeaderRight>
+              </FeeRow>
+            </FeeDetails>
+          </AccordionContent>
         </AccordionWrapper>
       </Root>
 
@@ -452,17 +503,25 @@ const IntentView: React.FC<{
         <HeaderLeft>
           <TooltipMessage>Total</TooltipMessage>
           <AppTooltip message="Total Spend + Fees">
-            <InfoImg src={IMAGE_LINKS['info']} alt="Info" height={18} width={18} />
+            <InfoImg
+              src={IMAGE_LINKS["info"]}
+              alt="Info"
+              height={18}
+              width={18}
+            />
           </AppTooltip>
         </HeaderLeft>
         <HeaderRight>
           <TotalFeesValue>
-            {getReadableNumber(new Decimal(getSupplyVal()).add(intent.fees.total).toString())} {intent?.token?.symbol}
+            {getReadableNumber(intent.sourcesTotal)} {intent?.token?.symbol}
           </TotalFeesValue>
 
           {rates?.[intent?.token?.symbol] && (
             <TotalAtDestinationValue>
-              ~{(Number(intent?.sourcesTotal) / Number(rates[intent?.token?.symbol])).toFixed(2)}{' '}
+              {(
+                Number(intent?.sourcesTotal) /
+                Number(rates[intent?.token?.symbol])
+              ).toFixed(2)}{" "}
               USD
             </TotalAtDestinationValue>
           )}
@@ -473,8 +532,12 @@ const IntentView: React.FC<{
         <Button onClick={() => deny()} variant="secondary">
           Cancel
         </Button>
-        <Button onClick={() => allow()} disabled={intentRefreshing} variant="primary">
-          {intentRefreshing ? 'Refreshing' : 'Confirm'}
+        <Button
+          onClick={() => allow()}
+          disabled={intentRefreshing}
+          variant="primary"
+        >
+          {intentRefreshing ? "Refreshing" : "Confirm"}
         </Button>
       </ButtonWrap>
     </MainContainer>

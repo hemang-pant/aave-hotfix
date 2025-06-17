@@ -15,6 +15,7 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'off',
     'react-hooks/exhaustive-deps': 'off',
     'simple-import-sort/imports': 'off',
+    'prefer-const': 'off',
     'simple-import-sort/exports': 'off',
     'import/first': 'off',
     'import/newline-after-import': 'off',

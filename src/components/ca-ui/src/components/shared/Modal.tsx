@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
-import styled, { css, keyframes } from 'styled-components';
-import { IMAGE_LINKS } from '../../utils/assetList';
+import React, { ReactNode } from "react";
+import styled, { keyframes } from "styled-components";
+import { IMAGE_LINKS } from "../../utils/assetList";
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -42,7 +42,7 @@ const slideOut = keyframes`
 `;
 
 const ModalOverlay = styled.div<{ $isopen: boolean; $alwaysOnTop: boolean }>`
-  display: ${({ $isopen }) => ($isopen ? 'flex' : 'none')};
+  display: ${({ $isopen }) => ($isopen ? "flex" : "none")};
   top: 0;
   left: 0;
   width: 100%;
@@ -52,29 +52,24 @@ const ModalOverlay = styled.div<{ $isopen: boolean; $alwaysOnTop: boolean }>`
   justify-content: center;
   align-items: center;
   position: fixed;
-  ${({ $alwaysOnTop }) =>
-    $alwaysOnTop &&
-    css`
-      z-index: 2147483645;
-    `}
+  z-index: ${({ $alwaysOnTop }) => ($alwaysOnTop ? 2147483645 : 1)};
 `;
 
-const ModalContainer = styled.div<{ $isopen: boolean; $alwaysOnTop: boolean }>`
+const ModalContainer = styled.div<{
+  $isopen: boolean;
+  $alwaysOnTop: boolean;
+}>`
   background: ${({ theme }) => theme.modalBackground};
   border: ${({ theme }) => `1px solid ${theme.backgroundColor}`};
-  padding: 20px;
-  border-radius: 10px;
+  padding: 1.5rem;
+  border-radius: 14px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 400px;
   text-align: center;
   overflow: hidden;
   animation: ${({ $isopen }) => ($isopen ? slideIn : slideOut)} 0.3s ease-out;
-  ${({ $alwaysOnTop }) =>
-    $alwaysOnTop &&
-    css`
-      z-index: 2147483646;
-    `}
+  z-index: ${({ $alwaysOnTop }) => ($alwaysOnTop ? 2147483645 : 2)};
 `;
 
 const Footer = styled.footer`
@@ -82,9 +77,9 @@ const Footer = styled.footer`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  gap: 10px;
-  font-family: 'Inter', sans-serif;
-  margin-top: 10px;
+  gap: 7px;
+  font-family: "Inter", sans-serif;
+  margin-top: 1.25rem;
   font-size: 0.875rem;
   font-weight: 500;
   color: ${({ theme }) => theme.primaryColor};
@@ -100,14 +95,14 @@ interface ModalProps {
   children: ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ isopen, children }) => {
+const Modal: React.FC<ModalProps> = ({ isopen, alwaysOnTop, children }) => {
   return (
-    <ModalOverlay $alwaysOnTop={true} $isopen={isopen}>
-      <ModalContainer $alwaysOnTop={true} $isopen={isopen}>
+    <ModalOverlay $alwaysOnTop={alwaysOnTop} $isopen={isopen}>
+      <ModalContainer $alwaysOnTop={alwaysOnTop} $isopen={isopen}>
         {children}
         <Footer>
           Powered by
-          <Img src={IMAGE_LINKS['footer']} alt="Powered by arcana" />
+          <Img src={IMAGE_LINKS["footer"]} alt="Powered by arcana" />
         </Footer>
       </ModalContainer>
     </ModalOverlay>

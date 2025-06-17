@@ -4,18 +4,27 @@ import {
   type ProgressStep,
   type Intent as IntentType,
   type onAllowanceHookSource,
-} from '@arcana/ca-sdk';
-import { useState, useEffect, useRef } from 'react';
-import { clearAsyncInterval, setAsyncInterval } from '../utils/commonFunction';
-import { useAccount, useAccountEffect } from 'wagmi';
-import { getFailStatus } from 'src/libs/web3-data-provider/Web3Provider';
+} from "@arcana/ca-sdk";
+import { useState, useEffect, useRef } from "react";
+import { clearAsyncInterval, setAsyncInterval } from "../utils/commonFunction";
+import { useAccount } from "wagmi";
 
-type CurrentStep = 'ub' | 'allowance' | 'intent' | 'progression' | 'loading' | 'none' | 'error';
+enum VIEW {
+  ERROR,
+  UB,
+  ALLOWANCE,
+  INTENT,
+  PROGRESSION,
+  LOADING,
+  NONE,
+}
 
 const useCAInternal = (ca: CA) => {
-  const [currentStep, setCurrentStep] = useState<CurrentStep>('none');
-  const [error, setError] = useState('');
-  const [steps, setSteps] = useState<Array<ProgressStep & { done: boolean }>>([]);
+  const [view, setView] = useState<VIEW>(VIEW.NONE);
+  const [error, setError] = useState("");
+  const [steps, setSteps] = useState<Array<ProgressStep & { done: boolean }>>(
+    []
+  );
   const [intentRefreshing, setIntentRefreshing] = useState(false);
   const intentP = useRef({
     allow: () => {},
@@ -25,7 +34,7 @@ const useCAInternal = (ca: CA) => {
   });
 
   const allowanceP = useRef<{
-    allow: ((s: Array<'min' | 'max' | bigint | string>) => void) | null;
+    allow: ((s: Array<"min" | "max" | bigint | string>) => void) | null;
     deny: () => void;
     sources: Array<onAllowanceHookSource & { done: boolean }>;
   }>({
@@ -40,12 +49,12 @@ const useCAInternal = (ca: CA) => {
       intentP.current.intervalHandler = null;
     }
     intentP.current.allow();
-    setCurrentStep('progression');
+    setView(VIEW.PROGRESSION);
   };
 
   const intentDeny = () => {
     if (intentP.current.intervalHandler != null) {
-      console.log('setting intervalHandler');
+      console.log("setting intervalHandler");
       clearAsyncInterval(intentP.current.intervalHandler);
       intentP.current.intervalHandler = null;
     }
@@ -53,12 +62,8 @@ const useCAInternal = (ca: CA) => {
   };
 
   useEffect(() => {
-    console.log('getFailStatus: ', getFailStatus());
-    if (getFailStatus()[0].done === true || getFailStatus()[1].done === true) {
-      setCurrentStep('error');
-    }
     if (error) {
-      setCurrentStep('error');
+      setView(VIEW.ERROR);
     }
   }, [error]);
 
@@ -70,13 +75,13 @@ const useCAInternal = (ca: CA) => {
         intentP.current.deny = deny;
         intentP.current.intent = intent;
         intentP.current.intervalHandler = setAsyncInterval(async () => {
-          console.time('intentRefresh');
+          console.time("intentRefresh");
           setIntentRefreshing(true);
           intentP.current.intent = await refresh();
           setIntentRefreshing(false);
-          console.timeEnd('intentRefresh');
+          console.timeEnd("intentRefresh");
         }, 5000);
-        setCurrentStep('intent');
+        setView(VIEW.INTENT);
       });
 
       ca.setOnAllowanceHook(async ({ allow, deny, sources }) => {
@@ -86,15 +91,15 @@ const useCAInternal = (ca: CA) => {
         }));
         allowanceP.current.allow = allow;
         allowanceP.current.deny = deny;
-        allowanceP.current.allow(sources.map(() => 'max'));
-        setCurrentStep('allowance');
+        allowanceP.current.allow(sources.map(() => "max"));
+        setView(VIEW.ALLOWANCE);
       });
 
-      ca.caEvents.addListener('expected_steps', (data: ProgressSteps) => {
+      ca.caEvents.addListener("expected_steps", (data: ProgressSteps) => {
         setSteps(data.map((d) => ({ ...d, done: false })));
       });
 
-      ca.caEvents.addListener('step_complete', (data: ProgressStep) => {
+      ca.caEvents.addListener("step_complete", (data: ProgressStep) => {
         setSteps((steps) => {
           return steps.map((s) => {
             if (s.type === data.type) {
@@ -108,81 +113,73 @@ const useCAInternal = (ca: CA) => {
           });
         });
 
-        if (data.type === 'ALLOWANCE_APPROVAL_MINED') {
-          const tid = data.typeID.split('_')[1];
+        if (data.type === "ALLOWANCE_APPROVAL_MINED") {
+          const tid = data.typeID.split("_")[1];
           const chainID = parseInt(tid, 10);
-          const v = allowanceP.current.sources.find((a) => a.chain.id === chainID);
+          const v = allowanceP.current.sources.find(
+            (a) => a.chain.id === chainID
+          );
           if (v) {
             v.done = true;
           }
         }
       });
-    }
 
-    return () => {
-      ca.caEvents.removeAllListeners('expected_steps');
-      ca.caEvents.removeAllListeners('step_complete');
-    };
+      return () => {
+        ca.caEvents.removeAllListeners("expected_steps");
+        ca.caEvents.removeAllListeners("step_complete");
+      };
+    }
   }, [ca]);
 
   return {
-    setCurrentStep,
+    setView,
     intentRefreshing,
     steps,
-    currentStep,
-    intentP,
+    view,
+    intent: intentP.current.intent,
     intentAllow,
     intentDeny,
-    allowanceP,
+    allowanceSources: allowanceP.current.sources,
     error,
     setError,
   };
 };
 
+enum STATUS {
+  DISCONNECTED,
+  INPROGRESS,
+  CONNECTED,
+}
+
 const useProvideCA = (ca: CA) => {
   const [ready, setReady] = useState(false);
-  const { address, isConnected, connector } = useAccount();
-  const [isMounted, setIsMounted] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState<STATUS>(
+    STATUS.DISCONNECTED
+  );
+  const { status, connector, address } = useAccount();
 
-  if (isConnected && connector !== null && isMounted === false) {
-    console.log('Connected wallet address:', address);
+  if (status === "connected" && connectionStatus === STATUS.DISCONNECTED) {
+    setConnectionStatus(STATUS.INPROGRESS);
     try {
-      console.log(' connector = ', connector);
-      const p = connector!.getProvider().then((p) => {
-        console.log(' provider = ', p);
-        ca.setEVMProvider(p as any);
-        ca.init().then(() => {
-          setIsMounted(true);
-          setReady(true);
-        });
-      });
-      console.log(' p = ', p);
-    } catch (e) {
-      console.log('ca did not connect. err = ', e);
-    }
-    // Display the address in your UI
-  } else {
-    console.log('Not connected');
-    // Prompt the user to connect their wallet
-  }
-  useAccountEffect({
-    async onConnect({ connector }) {
-      try {
-        const p = await connector.getProvider();
-        ca.setEVMProvider(p as any);
+      connector.getProvider().then(async (p) => {
+        await ca.setEVMProvider(p as any);
         await ca.init();
         setReady(true);
-      } catch (e) {
-        console.log('ca did not connect. err = ', e);
-      }
-    },
-    onDisconnect() {
-      ca.deinit();
-      setReady(false);
-    },
-  });
-  return { ca, ready };
+        setConnectionStatus(STATUS.CONNECTED);
+      });
+    } catch (e) {
+      console.log("ca did not connect. err = ", e);
+    }
+  }
+
+  if (status === "disconnected" && connectionStatus === STATUS.CONNECTED) {
+    setConnectionStatus(STATUS.INPROGRESS);
+    ca.deinit();
+    setReady(false);
+    setConnectionStatus(STATUS.DISCONNECTED);
+  }
+  return { ca, ready, address };
 };
 
-export { useProvideCA, useCAInternal };
-export type { CurrentStep };
+export { useProvideCA, useCAInternal, VIEW };

@@ -28,6 +28,7 @@ import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
 import { CAProvider } from 'src/components/ca-ui/src';
+import { CA } from '@arcana/ca-sdk';
 
 const SwitchModal = dynamic(() =>
   import('src/components/transactions/Switch/SwitchModal').then((module) => module.SwitchModal)
@@ -101,6 +102,8 @@ export default function MyApp(props: MyAppProps) {
   const [initializeMixpanel, setWalletType] = useRootStore(
     useShallow((store) => [store.initializeMixpanel, store.setWalletType])
   );
+  const ca = new CA();
+
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -141,7 +144,7 @@ export default function MyApp(props: MyAppProps) {
         <LanguageProvider>
           <WagmiProvider config={wagmiConfig}>
             <QueryClientProvider client={queryClient}>
-              <CAProvider>
+              <CAProvider client={ca}>
                 <ConnectKitProvider
                   onDisconnect={cleanLocalStorage}
                   onConnect={({ connectorId }) => setWalletType(connectorId)}

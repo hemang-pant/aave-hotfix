@@ -13,6 +13,6 @@ export const getTextFromStep = (status: string, done: boolean): string => {
     case 'MANUAL_STEP_2':
       return done ? 'Transaction Mined' : 'Mining Transaction';
     default:
-      return 'Unknown status. Please contact support.';
+      return "Unknown status. Please contact support.";
   }
 };

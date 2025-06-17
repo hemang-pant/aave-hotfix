@@ -1,17 +1,17 @@
-import { useContext } from 'react';
-import { CAUnifiedBalanceContext, CAContext } from '../context';
-import Decimal from 'decimal.js';
-import { useQuery } from '@tanstack/react-query';
-import { ALLOWED_TOKENS } from '../utils/constants';
+import { useContext } from "react";
+import { CAUnifiedBalanceContext, CAContext } from "../context";
+import Decimal from "decimal.js";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { ALLOWED_TOKENS } from "../utils/constants";
 
-const UNIFIED_BALANCE_KEY = 'xar_unified_balance';
+const UNIFIED_BALANCE_KEY = "xar_unified_balance";
 const BALANCE_REFETCH_INTERVAL = 30_000;
 
 const useUnifiedBalance = () => {
   const { ca, ready } = useContext(CAContext);
 
   const { isPending, data } = useQuery({
-    queryKey: [UNIFIED_BALANCE_KEY],
+    queryKey: [UNIFIED_BALANCE_KEY, "uub"],
     queryFn: () => {
       if (ca && ready) {
         return ca.getUnifiedBalances();
@@ -22,7 +22,7 @@ const useUnifiedBalance = () => {
     enabled: ready && ca !== null,
   });
   let balance = BigInt(0);
-  const ethBalance = data?.find((b) => b.symbol.toLowerCase() === 'eth');
+  const ethBalance = data?.find((b) => b.symbol.toLowerCase() === "eth");
   if (ethBalance) {
     balance = convertToDecimals(ethBalance.balance, 18);
   }
@@ -79,116 +79,84 @@ export type UseBalanceReturnValue = {
   }[];
 };
 
-type UseBalanceReturn = {
-  loading: boolean;
-  data: UseBalanceReturnValue | null;
-  error: Error | null;
-};
+type UseBalanceReturn = UseQueryResult<UseBalanceReturnValue | null>;
 
 const useBalance = ({ symbol }: UseBalanceParams): UseBalanceReturn => {
   const { ca, ready } = useContext(CAContext);
 
-  const { isPending, data, isSuccess, error } = useQuery({
-    queryKey: [UNIFIED_BALANCE_KEY],
-    queryFn: () => {
+  const result = useQuery({
+    queryKey: [UNIFIED_BALANCE_KEY, symbol],
+    queryFn: async () => {
       if (ca && ready) {
-        return ca.getUnifiedBalances();
-      }
-      return [];
-    },
-    refetchInterval: BALANCE_REFETCH_INTERVAL,
-    enabled: ready && ca !== null,
-  });
-
-  if (isSuccess) {
-    const val = data.find((b) => b.symbol.toLowerCase() === symbol.toLowerCase());
-    if (!val) {
-      return {
-        loading: false,
-        data: null,
-        error: new Error('asset not supported'),
-      };
-    }
-    return {
-      loading: false,
-      data: {
-        decimals: val.breakdown[0].decimals,
-        formatted: val.balance,
-        symbol: val.symbol.toUpperCase(),
-        value: convertToDecimals(val.balance, val.breakdown[0].decimals),
-        breakdown: val.breakdown.map((b) => {
-          return {
-            chain: b.chain,
-            formatted: b.balance,
-            address: b.contractAddress,
-            value: convertToDecimals(b.balance, val.breakdown[0].decimals),
-          };
-        }),
-      },
-      error: null,
-    };
-  } else {
-    return {
-      loading: isPending,
-      error: error,
-      data: null,
-    };
-  }
-};
-
-type UseBalancesReturn = {
-  loading: boolean;
-  data: UseBalanceReturnValue[] | null;
-  error: Error | null;
-};
-
-const useBalances = (): UseBalancesReturn => {
-  const { ca, ready } = useContext(CAContext);
-
-  const { isPending, data, isSuccess, error } = useQuery({
-    queryKey: [UNIFIED_BALANCE_KEY],
-    queryFn: () => {
-      if (ca && ready) {
-        return ca.getUnifiedBalances();
-      }
-      return [];
-    },
-    refetchInterval: BALANCE_REFETCH_INTERVAL,
-    enabled: ready && ca !== null,
-  });
-
-  if (isSuccess) {
-    return {
-      loading: false,
-      data: data.map((v) => {
+        const data = await ca.getUnifiedBalances();
+        const val = data.find(
+          (b) => b.symbol.toLowerCase() === symbol.toLowerCase()
+        );
+        if (!val) {
+          return null;
+        }
         return {
-          decimals: v.breakdown[0].decimals,
-          formatted: v.balance,
-          symbol: v.symbol.toUpperCase(),
-          value: convertToDecimals(v.balance, v.breakdown[0].decimals),
-          breakdown: v.breakdown.map((b) => {
+          decimals: val.decimals,
+          formatted: val.balance,
+          symbol: val.symbol.toUpperCase(),
+          value: convertToDecimals(val.balance, val.decimals),
+          breakdown: val.breakdown.map((b) => {
             return {
               chain: b.chain,
               formatted: b.balance,
               address: b.contractAddress,
-              value: convertToDecimals(b.balance, v.breakdown[0].decimals),
+              value: convertToDecimals(b.balance, b.decimals),
             };
           }),
         };
-      }),
-      error: null,
-    };
-  } else {
-    return {
-      loading: isPending,
-      error: error,
-      data: null,
-    };
-  }
+      }
+      return null;
+    },
+    refetchInterval: BALANCE_REFETCH_INTERVAL,
+    enabled: ready && ca !== null,
+  });
+
+  return result;
+};
+
+type UseBalancesReturn = UseQueryResult<UseBalanceReturnValue[] | null>;
+
+const useBalances = (): UseBalancesReturn => {
+  const { ca, ready } = useContext(CAContext);
+
+  const result = useQuery({
+    queryKey: [UNIFIED_BALANCE_KEY],
+    queryFn: async () => {
+      if (ca && ready) {
+        const data = await ca.getUnifiedBalances();
+        return data.map((v) => {
+          return {
+            decimals: v.decimals,
+            formatted: v.balance,
+            symbol: v.symbol.toUpperCase(),
+            value: convertToDecimals(v.balance, v.decimals),
+            breakdown: v.breakdown.map((b) => {
+              return {
+                chain: b.chain,
+                formatted: b.balance,
+                address: b.contractAddress,
+                value: convertToDecimals(b.balance, b.decimals),
+              };
+            }),
+          };
+        });
+      }
+      return [];
+    },
+    refetchInterval: BALANCE_REFETCH_INTERVAL,
+    enabled: ready && ca !== null,
+  });
+
+  return result;
 };
 
 const convertToDecimals = (value: string, decimals: number) => {
-  return BigInt(new Decimal(value).mul(Decimal.pow(10, decimals)).toString());
+  return BigInt(new Decimal(value).mul(Decimal.pow(10, decimals)).toFixed());
 };
 
 export { useUnifiedBalance, useBalanceModal, useBalance, useBalances };

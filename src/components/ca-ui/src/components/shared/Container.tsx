@@ -1,10 +1,10 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const MainContainer = styled.div<{ $display: boolean }>`
   display: block;
   overflow: hidden;
-  visibility: ${({ $display }) => ($display ? 'visible' : 'hidden')};
-  height: ${({ $display }) => ($display ? 'auto' : '0')};
+  visibility: ${({ $display }) => ($display ? "visible" : "hidden")};
+  height: ${({ $display }) => ($display ? "auto" : "0")};
   transition: height 300ms ease;
 `;
 
