@@ -57,6 +57,7 @@ const useCAInternal = (ca: CA) => {
       console.log("setting intervalHandler");
       clearAsyncInterval(intentP.current.intervalHandler);
       intentP.current.intervalHandler = null;
+      setView(VIEW.NONE);
     }
     intentP.current.deny();
   };
