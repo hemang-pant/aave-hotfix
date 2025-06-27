@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS, ERC20Service, transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { JsonRpcProvider, TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
-import { BigNumber, PopulatedTransaction, utils } from 'ethers';
+import { PopulatedTransaction, utils } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useRootStore } from 'src/store/root';
@@ -13,6 +13,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { Web3Context } from '../hooks/useWeb3Context';
 import { getEthersProvider } from './adapters/EthersAdapter';
+import { useCAFn } from 'src/components/ca-ui/src';
 
 export type ERC20TokenType = {
   address: string;
@@ -74,6 +75,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const { watchAssetAsync } = useWatchAsset();
   const { chainId, address } = useAccount();
   const { connect, connectors } = useConnect();
+  const { execute } = useCAFn();
 
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
@@ -123,11 +125,23 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     const provider = await getEthersProvider(wagmiConfig, { chainId });
     if (provider) {
       const { from, ...data } = txData;
-      const signer = provider.getSigner(from);
-      const txResponse: TransactionResponse = await signer.sendTransaction({
-        ...data,
-        value: data.value ? BigNumber.from(data.value) : undefined,
-      });
+      // const signer = provider.getSigner(from);
+      // const txResponse: TransactionResponse = await signer.sendTransaction({
+      //   ...data,
+      //   value: data.value ? BigNumber.from(data.value) : undefined,
+      // });
+
+      const txResponse = await execute({
+        data: data.data as `0x${string}`,
+        to: data.to as `0x${string}`,
+        value:data.value ? data.value as `0x${string}` : undefined,
+        from: from! as `0x${string}`,
+      },
+        {
+          amount: '0.01',
+          symbol: 'ETH',
+         }
+      ) as TransactionResponse;
 
       console.log('Transaction sent. Hash:', txResponse.hash);
       console.log('Transaction Approved');

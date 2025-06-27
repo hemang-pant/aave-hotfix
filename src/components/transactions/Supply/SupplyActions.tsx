@@ -17,7 +17,6 @@ import { useShallow } from 'zustand/shallow';
 import Decimal from 'decimal.js';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
-import { useUnifiedBalance, useCAFn } from 'src/components/ca-ui/src';
 
 export interface SupplyActionProps extends BoxProps {
   amountToSupply: string;
@@ -78,11 +77,11 @@ export const SupplyActions = React.memo(
     const permitAvailable = tryPermit({ reserveAddress: poolAddress, isWrappedBaseAsset });
     const { sendTx } = useWeb3Context();
     const queryClient = useQueryClient();
-    const caBalances = useUnifiedBalance().balances;
+    // const caBalances = useUnifiedBalance().balances;
 
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
-    const { bridge } = useCAFn();
+    // const { bridge } = useCAFn();
     const {
       data: approvedAmount,
       refetch: fetchApprovedAmount,
@@ -150,43 +149,43 @@ export const SupplyActions = React.memo(
         if (symbol == 'USD₮0' || symbol == 'USDt') {
           symbol = 'USDT';
         }
-        if (
-          Number(
-            caBalances
-              ?.find((balance) => balance.symbol === (symbol == 'WETH' ? 'ETH' : symbol))
-              ?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)
-              ?.balance
-          ) < Number(amountToSupply)
-        ) {
-          console.log(
-            'wallet Balance: ',
-            caBalances
-              ?.find((balance) => balance.symbol === (symbol == 'WETH' ? 'ETH' : symbol))
-              ?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)
-              ?.balance
-          );
-          console.log('amount to supply: ', amountToSupply);
-          const decimalAmount = new Decimal(amountToSupply)
-            .sub(
-              caBalances
-                ?.find((balance) => balance.symbol === (symbol == 'WETH' ? 'ETH' : symbol))
-                ?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)
-                ?.balance!
-            )
-            .add(symbol != 'WETH' ? '0' : '0.000001')
-            .toString();
-          supplyVal = new Decimal(amountToSupply);
-          if (symbol == 'WETH' || symbol == 'weth') {
-            symbol = 'ETH';
-          }
-          await bridge({
-            amount: decimalAmount,
-            token: ['USDC', 'USDT', 'ETH', 'usdc', 'usdt', 'eth'].find(
-              (token) => token === symbol
-            ) as 'USDC' | 'USDT' | 'ETH' | 'usdc' | 'usdt' | 'eth',
-            chain: currentMarketData.chainId,
-          });
-        }
+        // if (
+        //   Number(
+        //     caBalances
+        //       ?.find((balance) => balance.symbol === (symbol == 'WETH' ? 'ETH' : symbol))
+        //       ?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)
+        //       ?.balance
+        //   ) < Number(amountToSupply)
+        // ) {
+        //   console.log(
+        //     'wallet Balance: ',
+        //     caBalances
+        //       ?.find((balance) => balance.symbol === (symbol == 'WETH' ? 'ETH' : symbol))
+        //       ?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)
+        //       ?.balance
+        //   );
+        //   console.log('amount to supply: ', amountToSupply);
+          // const decimalAmount = new Decimal(amountToSupply)
+          //   .sub(
+          //     caBalances
+          //       ?.find((balance) => balance.symbol === (symbol == 'WETH' ? 'ETH' : symbol))
+          //       ?.breakdown.find((breakdown) => breakdown.chain.id === currentMarketData.chainId)
+          //       ?.balance!
+          //   )
+          //   .add(symbol != 'WETH' ? '0' : '0.000001')
+          //   .toString();
+          // supplyVal = new Decimal(amountToSupply);
+          // if (symbol == 'WETH' || symbol == 'weth') {
+          //   symbol = 'ETH';
+          // }
+          // await bridge({
+          //   amount: decimalAmount,
+          //   token: ['USDC', 'USDT', 'ETH', 'usdc', 'usdt', 'eth'].find(
+          //     (token) => token === symbol
+          //   ) as 'USDC' | 'USDT' | 'ETH' | 'usdc' | 'usdt' | 'eth',
+          //   chain: currentMarketData.chainId,
+          // });
+        // }
         // determine if approval is signature or transaction
         // checking user preference is not sufficient because permit may be available but the user has an existing approval
         if (usePermit && signatureParams) {
@@ -207,7 +206,9 @@ export const SupplyActions = React.memo(
             amount: parseUnits(amountToSupply, decimals).toString(),
             reserve: poolAddress,
           });
+          console.log('supplyTxData pre estimateGasLimit: ', supplyTxData);
           supplyTxData = await estimateGasLimit(supplyTxData);
+          console.log('supplyTxData post estimateGasLimit: ', supplyTxData);
           response = await sendTx(supplyTxData);
 
           await response.wait(1);
