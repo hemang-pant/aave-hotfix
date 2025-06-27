@@ -56,10 +56,10 @@
     penpal "^6.0.1"
     validator "^13.11.0"
 
-"@arcana/ca-common@^0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@arcana/ca-common/-/ca-common-0.0.17.tgz#a9445a2989f112d4c53a89f60691c787074702bf"
-  integrity sha512-ViRzpsHvz1/YjU+urSOwgYymW2PMR9BfSGfwtuqy2eC+HC5AfUfxGv0TQIawWt/8tBWe9YUARIC/a3m5yVgRsQ==
+"@arcana/ca-common@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@arcana/ca-common/-/ca-common-0.0.18.tgz#bb47494c55e29f1cc050beb65627b6f3fcd1af92"
+  integrity sha512-qUwcl+i6otdprjW9J8p81b1X0q1oTgy8zm+UBunMsSUO4TJiyeJEWUFkLbcS6pCx19intGl76oZavKByvE9tNg==
   dependencies:
     "@bufbuild/protobuf" "^2.2.5"
     "@improbable-eng/grpc-web" "^0.15.0"
@@ -67,12 +67,12 @@
     es-toolkit "^1.36.0"
     tslib "^2.8.1"
 
-"@arcana/ca-sdk@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@arcana/ca-sdk/-/ca-sdk-1.0.0.tgz#4d065af049c90cebeaf77a989df0803ef2c17615"
-  integrity sha512-64q0X4hyAvNIjKRy80DT3de97MfuAoT+fiDMV9WciTwLGvPMe8AWRWHZD5cbi4mWI7WX16wgF8afUPKOjIKKvA==
+"@arcana/ca-sdk@1.0.1-beta.2":
+  version "1.0.1-beta.2"
+  resolved "https://registry.yarnpkg.com/@arcana/ca-sdk/-/ca-sdk-1.0.1-beta.2.tgz#fef9d58553cb3bc6f85af14f5cff08f64de7d1b6"
+  integrity sha512-6IaSmDfZ1nJ1Z4Mxc1qbDTDgy0Fx1IneEWUXeysahpE+RKA1x2isyMBYKUQ5PRm2a28oZFpntt05L3/4Cu6oug==
   dependencies:
-    "@arcana/ca-common" "^0.0.17"
+    "@arcana/ca-common" "^0.0.18"
     "@cosmjs/proto-signing" "^0.33.0"
     "@cosmjs/stargate" "^0.33.0"
     "@metamask/rpc-errors" "^7.0.2"
