@@ -67,10 +67,10 @@
     es-toolkit "^1.39.7"
     tslib "^2.8.1"
 
-"@arcana/ca-sdk@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@arcana/ca-sdk/-/ca-sdk-1.1.1.tgz#c6be3d0cf32c570b43b22151b517c78adecdd604"
-  integrity sha512-AoHNHzLb7emQgQ8TldDFIeXdYMUGaDZnuZNwk12tC6wwplVb+2QwJ66lVek3pInj8uy4UM0H+7jjAAMwSMgxrA==
+"@arcana/ca-sdk@1.1.2-beta.1":
+  version "1.1.2-beta.1"
+  resolved "https://registry.yarnpkg.com/@arcana/ca-sdk/-/ca-sdk-1.1.2-beta.1.tgz#a23119958d2e6334711b0a84061a90e6c63d891f"
+  integrity sha512-NlnUrjogOBo3CZGPzCtbe4uVvzPVC14TCxcFgRHWLvclReEKawCUQDcFWKR2IO3WIp2utVzuiW2MG+5IgGKOvA==
   dependencies:
     "@arcana/ca-common" "^1.0.0"
     "@cosmjs/proto-signing" "^0.34.0"

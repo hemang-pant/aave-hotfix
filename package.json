@@ -35,7 +35,7 @@
     "@aave/math-utils": "1.33.1",
     "@arcana/auth": "^1.0.12-beta.13",
     "@arcana/auth-wagmi": "^3.0.0",
-    "@arcana/ca-sdk": "1.1.1",
+    "@arcana/ca-sdk": "1.1.2-beta.1",
     "@ark-ui/react": "^5.0.0",
     "@bgd-labs/aave-address-book": "^4.18.1",
     "@emotion/cache": "11.10.3",
