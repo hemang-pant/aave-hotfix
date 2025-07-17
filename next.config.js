@@ -35,6 +35,7 @@ module.exports = withBundleAnalyzer({
   // assetPrefix: "./",
   trailingSlash: true,
   pageExtensions,
+  transpilePackages: ['@arcana/ca-sdk'],
   // NOTE: Needed for SAFE testing locally
   // async headers() {
   //   return [
